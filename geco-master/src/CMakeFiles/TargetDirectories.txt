@@ -1,0 +1,4 @@
+/Users/wbarakzai/Documents/1.Spring20/Athenomics/geco-master/src/CMakeFiles/rebuild_cache.dir
+/Users/wbarakzai/Documents/1.Spring20/Athenomics/geco-master/src/CMakeFiles/edit_cache.dir
+/Users/wbarakzai/Documents/1.Spring20/Athenomics/geco-master/src/CMakeFiles/GeDe.dir
+/Users/wbarakzai/Documents/1.Spring20/Athenomics/geco-master/src/CMakeFiles/GeCo.dir
