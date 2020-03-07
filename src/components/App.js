@@ -2,7 +2,41 @@ import React, { Component } from 'react';
 import logo from '../logo.png';
 import './App.css';
 
+const ipfsClient = require('ipfs-http-client');
+
 class App extends Component {
+
+  constructor(props){
+    super(props);
+    this.state = {
+      buffer: null
+    }; 
+  }
+
+  captureFile = (event) =>{
+    event.preventDefault();
+    console.log("file captured...");
+    // process file for IPFS
+    const file = event.target.files[0];
+    const extension = file.name.split('.')[1];
+    console.log(extension);
+    if(extension !== 'fasta' && extension !== 'fa'){
+      console.log('nope', extension);
+      return;
+    }
+    const reader = new window.FileReader();
+    reader.readAsArrayBuffer(file);
+    reader.onloadend  = () => {
+      this.setState({ buffer: Buffer(reader.result) })
+    }
+  }
+
+  onSubmit = (event) => {
+    event.preventDefault();
+    console.log('submitting form');
+
+  }
+
   render() {
     return (
       <div>
@@ -13,7 +47,7 @@ class App extends Component {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Dapp University
+            Athenomics
           </a>
         </nav>
         <div className="container-fluid mt-5">
@@ -27,18 +61,12 @@ class App extends Component {
                 >
                   <img src={logo} className="App-logo" alt="logo" />
                 </a>
-                <h1>Dapp University Starter Kit</h1>
-                <p>
-                  Edit <code>src/components/App.js</code> and save to reload.
-                </p>
-                <a
-                  className="App-link"
-                  href="http://www.dappuniversity.com/bootcamp"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  LEARN BLOCKCHAIN <u><b>NOW! </b></u>
-                </a>
+                <p>&nbsp;</p> 
+                <h2> Add Genome </h2>
+                <form onSubmit={this.onSubmit} >
+                  <input type='file' onChange={this.captureFile} />
+                  <input type='submit'/>
+                </form>  
               </div>
             </main>
           </div>
