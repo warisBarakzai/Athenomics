@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import logo from '../logo.png';
 import './App.css';
-
-const ipfsClient = require('ipfs-http-client');
+import ipfs from './ipfs'
 
 class App extends Component {
 
   constructor(props){
     super(props);
     this.state = {
-      buffer: null
+      buffer: null,
+      ipfsHash: null
     }; 
   }
 
@@ -32,10 +32,19 @@ class App extends Component {
   }
 
   onSubmit = (event) => {
-    event.preventDefault();
-    console.log('submitting form');
-
+    event.preventDefault()
+    console.log("Submitting file to ipfs...")
+    ipfs.add(this.state.buffer, (error, result) => {
+      console.log('Ipfs result', result)
+      if(error) {
+        console.error(error)
+        return
+      }
+      this.setState({ipfsHash: result[0].hash})
+    })
   }
+
+  
 
   render() {
     return (
