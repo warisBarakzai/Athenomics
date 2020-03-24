@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
 import logo from '../logo.png';
 import './App.css';
-import ipfs from './ipfs'
+import ipfs from './ipfs';
+import Web3 from 'web3';
 
 class App extends Component {
+
+  async componentWillMount() {
+    this.loadWeb3()
+  }
 
   constructor(props){
     super(props);
@@ -11,6 +16,17 @@ class App extends Component {
       buffer: null,
       ipfsHash: null
     }; 
+  }
+
+  async loadWeb3() {
+    if(window.ethereum) {
+      window.web3 = new Web3(window.ethereum)
+      await window.ethereum.enable()
+    } else if (window.web3) {
+      window.web3 = new Web3(window.web3.currentProvider)
+    } else {
+      window.alert("Please use MetaMask");
+    }
   }
 
   captureFile = (event) =>{
@@ -41,10 +57,11 @@ class App extends Component {
         return
       }
       this.setState({ipfsHash: result[0].hash})
+      console.log('ipfsHash', this.state.ipfsHash)
     })
   }
 
-  
+
 
   render() {
     return (
