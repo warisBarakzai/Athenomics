@@ -3,7 +3,6 @@ import logo from '../logo.png';
 import './App.css';
 import ipfs from './ipfs';
 import Web3 from 'web3';
-<<<<<<< HEAD
 import Athenomics from './../abi/Athenomics.json';
 import background from './background.jpg';
 
