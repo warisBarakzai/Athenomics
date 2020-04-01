@@ -5,7 +5,7 @@ contract Athenomics {
 	// Create a Genome container
 	struct Genome {
 		address owner;
-		string hash;
+		string seq;
 		string source_type;
 		address[] shared;
 	}
@@ -21,7 +21,7 @@ contract Athenomics {
 	
 	// mapping of publically available genomes to be bid on via id
 	mapping(uint => Genome) public genomes;
-	uint public genomesCount ;
+	uint public genomesCount;
 
 	// pubGenomesCount + privGenomesCount == genomesCount;
 
@@ -36,14 +36,13 @@ contract Athenomics {
  //        uint indexed _candidateId
  //    );
 
-	constructor() public {
-	}
+	constructor() public {}
 
 	// add genome to genome mapping
-	function addGenome(string memory _hash, string memory _source) public {
-			++genomesCount;
-			Genome memory _genome = Genome(msg.sender, _hash, _source, new address[](0));
-			genomes[genomesCount] = _genome;
+	function addGenome(string memory _seq, string memory _source) public {
+		++genomesCount;
+		Genome memory _genome = Genome(msg.sender, _seq, _source, new address[](0));
+		genomes[genomesCount] = _genome;
 	}
 	// add member to member mapping
 	function addMember(string memory _ins) public {

@@ -4,13 +4,13 @@ import './App.css';
 import ipfs from './ipfs';
 import Web3 from 'web3';
 import Athenomics from './../abi/Athenomics.json';
-import background from './background.jpg';
 
 class App extends Component {
 
   async componentWillMount() {
     await this.loadWeb3()
     await this.loadBlockchainData()
+    this.renderTableData()
   }
 
   // Get the account
@@ -22,18 +22,16 @@ class App extends Component {
   async loadBlockchainData() {
     const web3 = window.web3
     const accounts = await web3.eth.getAccounts()
+    console.log(accounts)
     this.setState({account: accounts[0]})
-    console.log(accounts, this.state)
     const networkId = await web3.eth.net.getId()
-    console.log(networkId)
     const networkData = Athenomics.networks[networkId]
     if(networkData) {
       // Fetch Contract
+      console.log(networkData.address)
       const contract = web3.eth.Contract(Athenomics.abi, networkData.address)
-      this.setState({ contract })
-      // const genomesCount = await contract.methods.genomesCount().call()
-      // console.log(genomesCount.toString())
-      // consolee.log(contract.methods.genomes(genomesCount-1))
+      this.setState({ contract: contract })    
+      this.updateTable()
     } else {
       window.alert('Smart contract not deployed')
     }
@@ -45,7 +43,9 @@ class App extends Component {
       account: '',
       buffer: null,
       ipfsHash: null,
-      source: null
+      source: null,
+      contract: null,
+      genomes: []
     }; 
   }
 
@@ -62,13 +62,10 @@ class App extends Component {
 
   captureFile = (event) =>{
     event.preventDefault();
-    console.log("file captured...");
     // process file for IPFS
     const file = event.target.files[0];
     const extension = file.name.split('.')[1];
-    console.log(extension);
     if(extension !== 'fasta' && extension !== 'fa'){
-      console.log('nope', extension);
       return;
     }
     const reader = new window.FileReader();
@@ -80,7 +77,6 @@ class App extends Component {
 
   captureSource = (event) => {
     event.preventDefault()
-    console.log(event.target.value)
     this.setState({source: event.target.value})
   }
 
@@ -102,6 +98,33 @@ class App extends Component {
     })
   }
 
+  updateTable = async event => {
+    this.state.genomes = []
+    const genomesCount = await this.state.contract.methods.genomesCount().call()
+    console.log(genomesCount.toString())
+    for(var i=1; i <= genomesCount; ++i){
+      const testGenome = await this.state.contract.methods.genomes(genomesCount).call()
+      this.state.genomes.push(testGenome);
+    }
+    console.log(this.state.genomes)  
+  }
+
+  renderTableData() {
+    console.log(this.state.genomes)
+
+    return this.state.genomes.map((genome, index) => {
+      console.log("Render Table Data", genome, index);
+      const { a, b, c, owner, seq, source_type } = genome //destructuring
+      return (
+        <tr key={owner}>
+           <td>{owner}</td>
+           <td>{seq}</td>
+           <td>{source_type}</td>
+        </tr>
+      )
+    })
+  }
+
 
 
 
@@ -118,7 +141,7 @@ class App extends Component {
         <nav className="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
           <a
             className="navbar-brand col-sm-3 col-md-2 mr-0"
-            // href="http://www.dappuniversity.com/bootcamp"
+            href="http://www.dappuniversity.com/bootcamp"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -145,13 +168,21 @@ class App extends Component {
                 <h2> Add Genome </h2>
                 <form onSubmit={this.onSubmit} >
                   <input type='file' onChange={this.captureFile} />
-                  <label for="sourceType">Source</label>
+                  <label htmlFor="sourceType">Source</label>
                   <input type="text" id="source" placeholder="Enter source" onChange={this.captureSource}/>
                   <input type='submit'/>
                 </form>  
               </div>
             </main>
           </div>
+        </div>
+        <div>
+          <h1 id='title'>Publically Available Genomes</h1>
+          <table id='genomes' onChange={this.updateTable}>
+            <tbody>
+              {this.renderTableData()}
+            </tbody>
+          </table>
         </div>
       </div>
     );
