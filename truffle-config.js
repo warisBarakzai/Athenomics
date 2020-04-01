@@ -1,22 +1,9 @@
-require('dotenv').config();
-const HDWalletProvider = require('truffle-hdwallet-provider');
-
 module.exports = {
   // See <http://truffleframework.com/docs/advanced/configuration>
   // for more about customizing your Truffle configuration!
   contracts_directory: "./src/contracts",
   contracts_build_directory: "./src/abi",
   networks: {
-    ipfs: {
-      provider: function(){
-        return new HDWalletProvider(
-          process.env.MNEMONIC, 
-          'https://ropsten.infura.io/${process.env.INFURA_API_KEY}'
-        )
-      },
-      gasPrice: 2500000000,
-      network_id: 3
-    },
     development: {
       host: "127.0.0.1",
       port: 7545,
