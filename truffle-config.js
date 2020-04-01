@@ -7,7 +7,7 @@ module.exports = {
   contracts_directory: "./src/contracts",
   contracts_build_directory: "./src/abi",
   networks: {
-    ropsten: {
+    ipfs: {
       provider: function(){
         return new HDWalletProvider(
           process.env.MNEMONIC, 
