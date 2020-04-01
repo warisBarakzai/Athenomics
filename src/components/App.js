@@ -5,33 +5,8 @@ import ipfs from './ipfs';
 import Web3 from 'web3';
 import Athenomics from './../abi/Athenomics.json';
 import background from './background.jpg';
-import storehash from './Storehash';
-
 
 class App extends Component {
-
-  constructor(props){
-    super(props);
-    this.state = {
-      account: '',
-      buffer: null,
-      ipfsHash: null,
-      source: null,
-      ethAddress:'', 
-      transactionHash:'', 
-      txReceipt: ''
-    }; 
-  }
-
-  //Convert the file to buffer to store on IPFS 
-  convertToBuffer = async(reader) => {
-    //file is converted to a buffer for upload to IPFS        
-    const buffer = await Buffer.from(reader.result);      
-    //set this buffer-using es6 syntax        
-    this.setState({
-      buffer
-    });    
-  };
 
   async componentWillMount() {
     await this.loadWeb3()
@@ -64,6 +39,16 @@ class App extends Component {
     }
   }
 
+  constructor(props){
+    super(props);
+    this.state = {
+      account: '',
+      buffer: null,
+      ipfsHash: null,
+      source: null
+    }; 
+  }
+
   async loadWeb3() {
     if(window.ethereum) {
       window.web3 = new Web3(window.ethereum)
@@ -76,7 +61,6 @@ class App extends Component {
   }
 
   captureFile = (event) =>{
-    event.stopPropagation() 
     event.preventDefault();
     console.log("file captured...");
     // process file for IPFS
@@ -117,6 +101,16 @@ class App extends Component {
 
     })
   }
+
+
+
+
+
+  
+
+
+
+
 
   render() {
     return (
