@@ -45,7 +45,10 @@ class App extends Component {
       account: '',
       buffer: null,
       ipfsHash: null,
-      source: null
+      source: null,
+      ethAddress:'',
+      transactionHash:'',
+      txReceipt: ''
     }; 
   }
 
@@ -101,9 +104,6 @@ class App extends Component {
 
     })
   }
-
-
-
 
 
   
