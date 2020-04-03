@@ -104,6 +104,7 @@ class App extends Component {
     })
   }
 
+
   async updateTable() {
     this.state.genomes = []
     const genomesCount = await this.state.contract.methods.genomesCount().call()
@@ -114,20 +115,11 @@ class App extends Component {
     console.log(this.state.genomes)  
   }
 
-  // renderTableData() {
-  //   console.log(this.state.genomes)
-  //   return this.state.genomes.map((genome, index) => {
-  //     console.log("Render Table Data", genome, index);
-  //     const { a, b, c, owner, seq, source_type } = genome //destructuring
-  //     return (
-  //       <tr key={owner}>
-  //          <td>{owner}</td>
-  //          <td>{seq}</td>
-  //          <td>{source_type}</td>
-  //       </tr>
-  //     )
-  //   })
-  // }
+  handleClick = async event =>{
+    console.log("clicked")
+    console.log(this.state.genomes[0].owner)
+  }
+
 
   renderTableData() {
     console.log(this.state.genomes)
@@ -135,9 +127,11 @@ class App extends Component {
       console.log(genome.owner, genome.seq, genome.source_type)
       return (
         <tr key={genome.owner}>
+          <td> {index} </td>
           <td>{genome.owner}</td>
           <td>{genome.seq}</td>
           <td>{genome.source_type}</td>
+          <td> <button className="btn btn-dark"> </button> </td>
         </tr>
       )
     })
@@ -184,10 +178,20 @@ class App extends Component {
             </main>
           </div>
         </div>
-        <div>
+        <div className="container-fluid mt-5">
           <h1 id='title'>Publically Available Genomes</h1>
-          <table id='genomes' onRender={this.updateTable}>
-            <tbody>
+          <table id='genomes' className="table table-hover table-bordered" onChange={this.updateTable}>
+            <thead>
+              <tr>
+                <th scope="col">Owner</th>
+                <th scope="col">Hash</th>
+                <th scope="col">sourceType</th>
+                <th scope="col">button</th>
+                
+              </tr>
+            </thead>
+
+            <tbody onClick={this.handleClick}>
               {this.renderTableData()}
             </tbody>
           </table>
