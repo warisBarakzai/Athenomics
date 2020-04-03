@@ -10,6 +10,7 @@ class App extends Component {
   async componentWillMount() {
     await this.loadWeb3()
     await this.loadBlockchainData()
+    await this.updateTable()
     this.renderTableData()
   }
 
@@ -22,7 +23,6 @@ class App extends Component {
   async loadBlockchainData() {
     const web3 = window.web3
     const accounts = await web3.eth.getAccounts()
-    console.log(accounts)
     this.setState({account: accounts[0]})
     const networkId = await web3.eth.net.getId()
     const networkData = Athenomics.networks[networkId]
@@ -31,7 +31,6 @@ class App extends Component {
       console.log(networkData.address)
       const contract = web3.eth.Contract(Athenomics.abi, networkData.address)
       this.setState({ contract: contract })    
-      this.updateTable()
     } else {
       window.alert('Smart contract not deployed')
     }
@@ -45,8 +44,15 @@ class App extends Component {
       ipfsHash: null,
       source: null,
       contract: null,
-      genomes: []
-    }; 
+      genomes: [],
+      students: [
+        { id: 1, name: 'Wasif', age: 21, email: 'wasif@email.com' },
+        { id: 2, name: 'Ali', age: 19, email: 'ali@email.com' },
+        { id: 3, name: 'Saad', age: 16, email: 'saad@email.com' },
+        { id: 4, name: 'Asad', age: 25, email: 'asad@email.com' }
+      ]
+    }
+
   }
 
   async loadWeb3() {
@@ -98,10 +104,9 @@ class App extends Component {
     })
   }
 
-  updateTable = async event => {
+  async updateTable() {
     this.state.genomes = []
     const genomesCount = await this.state.contract.methods.genomesCount().call()
-    console.log(genomesCount.toString())
     for(var i=1; i <= genomesCount; ++i){
       const testGenome = await this.state.contract.methods.genomes(genomesCount).call()
       this.state.genomes.push(testGenome);
@@ -109,31 +114,34 @@ class App extends Component {
     console.log(this.state.genomes)  
   }
 
+  // renderTableData() {
+  //   console.log(this.state.genomes)
+  //   return this.state.genomes.map((genome, index) => {
+  //     console.log("Render Table Data", genome, index);
+  //     const { a, b, c, owner, seq, source_type } = genome //destructuring
+  //     return (
+  //       <tr key={owner}>
+  //          <td>{owner}</td>
+  //          <td>{seq}</td>
+  //          <td>{source_type}</td>
+  //       </tr>
+  //     )
+  //   })
+  // }
+
   renderTableData() {
     console.log(this.state.genomes)
-
     return this.state.genomes.map((genome, index) => {
-      console.log("Render Table Data", genome, index);
-      const { a, b, c, owner, seq, source_type } = genome //destructuring
+      console.log(genome.owner, genome.seq, genome.source_type)
       return (
-        <tr key={owner}>
-           <td>{owner}</td>
-           <td>{seq}</td>
-           <td>{source_type}</td>
+        <tr key={genome.owner}>
+          <td>{genome.owner}</td>
+          <td>{genome.seq}</td>
+          <td>{genome.source_type}</td>
         </tr>
       )
     })
   }
-
-
-
-
-
-  
-
-
-
-
 
   render() {
     return (
@@ -178,7 +186,7 @@ class App extends Component {
         </div>
         <div>
           <h1 id='title'>Publically Available Genomes</h1>
-          <table id='genomes' onChange={this.updateTable}>
+          <table id='genomes' onRender={this.updateTable}>
             <tbody>
               {this.renderTableData()}
             </tbody>

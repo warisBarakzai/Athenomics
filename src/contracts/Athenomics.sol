@@ -8,12 +8,12 @@ contract Athenomics {
 		string seq;
 		string source_type;
 		address[] shared;
+		address[] open_requests;
 	}
 
 	struct Member {
-		uint id;
-		string institution;
 		address memAddress;
+		string institution;
 	}
 
 	// additions to mappings and address arrays changes state of contract.
@@ -41,14 +41,22 @@ contract Athenomics {
 	// add genome to genome mapping
 	function addGenome(string memory _seq, string memory _source) public {
 		++genomesCount;
-		Genome memory _genome = Genome(msg.sender, _seq, _source, new address[](0));
+		Genome memory _genome = Genome(msg.sender, _seq, _source, new address[](0), new address[](0));
 		genomes[genomesCount] = _genome;
 	}
 	// add member to member mapping
 	function addMember(string memory _ins) public {
 		++membersCount;
-		Member memory _member = Member(membersCount, _ins, msg.sender);
+		Member memory _member = Member(msg.sender, _ins);
 		members[membersCount] = _member;
+	}
+
+	function addRequest(address genome_owner) public {
+		for(uint i = 1; i <= genomesCount; ++i){
+			if(genomes[i].owner == genome_owner){
+				genomes[i].open_requests.push(msg.sender);
+			}
+		}
 	}
 
 	// Add candidates to candidates mapping
