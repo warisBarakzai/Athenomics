@@ -103,13 +103,18 @@ class App extends Component {
     const genomesCount = await this.state.contract.methods.genomesCount().call()
     for(var i=1; i <= genomesCount; ++i){
       const testGenome = await this.state.contract.methods.genomes(genomesCount).call()
+      testGenome.index = i;
       this.state.genomes.push(testGenome);
     }
   }
 
   handleClick = async event =>{
     console.log("clicked")
-    console.log(this.state.genomes[0].owner)
+    console.log(parseInt(event.target.innerText))
+    var index = parseInt(event.target.innerText)
+    console.log(index)
+    console.log(this.state.genomes)
+    console.log(this.state.genomes[index-1].owner)
   }
 
 
@@ -117,11 +122,11 @@ class App extends Component {
     return this.state.genomes.map((genome, index) => {
       return (
         <tr key={genome.owner}>
-          <td> {index} </td>
-          <td>{genome.owner}</td>
-          <td>{genome.seq}</td>
-          <td>{genome.source_type}</td>
-          <td> <button className="btn btn-dark"> </button> </td>
+          <td id={genome.index}> {genome.index} </td>
+          <td key={genome.owner} >{genome.owner}</td>
+          <td key={genome.seq} >{genome.seq}</td>
+          <td key={genome.source_type} >{genome.source_type}</td>
+          <td id={genome.index}> <button className="btn btn-dark">{genome.index} </button> </td>
         </tr>
       )
     })
@@ -173,6 +178,7 @@ class App extends Component {
           <table id='genomes' className="table table-hover table-bordered" onChange={this.updateTable}>
             <thead>
               <tr>
+                <th scope="col">Index</th>
                 <th scope="col">Owner</th>
                 <th scope="col">Hash</th>
                 <th scope="col">sourceType</th>
