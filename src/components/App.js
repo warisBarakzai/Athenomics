@@ -11,7 +11,6 @@ class App extends Component {
     await this.loadWeb3()
     await this.loadBlockchainData()
     await this.updateTable()
-    this.renderTableData()
   }
 
   // Get the account
@@ -45,12 +44,6 @@ class App extends Component {
       source: null,
       contract: null,
       genomes: [],
-      students: [
-        { id: 1, name: 'Wasif', age: 21, email: 'wasif@email.com' },
-        { id: 2, name: 'Ali', age: 19, email: 'ali@email.com' },
-        { id: 3, name: 'Saad', age: 16, email: 'saad@email.com' },
-        { id: 4, name: 'Asad', age: 25, email: 'asad@email.com' }
-      ]
     }
 
   }
@@ -112,7 +105,6 @@ class App extends Component {
       const testGenome = await this.state.contract.methods.genomes(genomesCount).call()
       this.state.genomes.push(testGenome);
     }
-    console.log(this.state.genomes)  
   }
 
   handleClick = async event =>{
@@ -122,9 +114,7 @@ class App extends Component {
 
 
   renderTableData() {
-    console.log(this.state.genomes)
     return this.state.genomes.map((genome, index) => {
-      console.log(genome.owner, genome.seq, genome.source_type)
       return (
         <tr key={genome.owner}>
           <td> {index} </td>
