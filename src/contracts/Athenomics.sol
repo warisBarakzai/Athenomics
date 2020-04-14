@@ -4,6 +4,7 @@ contract Athenomics {
 
 	// Create a Genome container
 	struct Genome {
+		uint index;
 		address owner;
 		string seq;
 		string source_type;
@@ -12,6 +13,7 @@ contract Athenomics {
 	}
 
 	struct Member {
+		uint index;
 		address memAddress;
 		string institution;
 	}
@@ -20,13 +22,15 @@ contract Athenomics {
 	// changing state of contract means writing to blockchain
 	
 	// mapping of publically available genomes to be bid on via id
+	// Can be 1 address/multiple genomes
 	mapping(uint => Genome) public genomes;
 	uint public genomesCount;
 
 	// pubGenomesCount + privGenomesCount == genomesCount;
 
 	// list of addresses of entities that may request genomes
-	mapping(uint => Member) public members;
+	// Only 1 address/each member
+	mapping(address => Member) public members;
 	uint public membersCount;
 
 
@@ -41,7 +45,7 @@ contract Athenomics {
 	// add genome to genome mapping
 	function addGenome(string memory _seq, string memory _source) public {
 		++genomesCount;
-		Genome memory _genome = Genome(msg.sender, _seq, _source, new address[](0), new address[](0));
+		Genome memory _genome = Genome(genomesCount, msg.sender, _seq, _source, new address[](0), new address[](0));
 		genomes[genomesCount] = _genome;
 	}
 	// add member to member mapping
@@ -51,12 +55,17 @@ contract Athenomics {
 		members[membersCount] = _member;
 	}
 
-	function addRequest(address genome_owner) public {
-		for(uint i = 1; i <= genomesCount; ++i){
-			if(genomes[i].owner == genome_owner){
-				genomes[i].open_requests.push(msg.sender);
-			}
-		}
+	function addRequest(uint genome_owner) public {
+		genomes[genome_owner].open_requests.push(msg.sender);
+
+	}
+
+	function getRequest(uint genome_owner) public view returns (address[] memory) {
+		return genomes[genome_owner].open_requests;
+	}
+
+	function getMemberName(address memAddress) public view returns (string memory) {
+		return members[memAddress];
 	}
 
 	// Add candidates to candidates mapping
