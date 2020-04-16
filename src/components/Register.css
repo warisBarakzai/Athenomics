@@ -1,0 +1,11 @@
+/*styles*/
+
+
+.form-signin {
+  width: 100%;
+}
+
+.form-control{
+	border: 2px solid black;
+	margin-bottom:20px;
+}

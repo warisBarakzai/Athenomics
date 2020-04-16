@@ -5,6 +5,8 @@ import Home from './Home';
 import NavBar from './NavBar';
 import OpenRequests from './OpenRequests';
 import PendingRequests from './PendingRequests';
+import Register from './Register';
+
 import {Route, link} from 'react-router-dom';
 
 class App extends Component {
@@ -81,6 +83,11 @@ class App extends Component {
         />
         <Route exact path="/PendingRequests" 
           render={(props) => <PendingRequests {...props} 
+          account={this.state.account} 
+          contract={this.state.contract}/>}
+        />
+        <Route exact path="/Register" 
+          render={(props) => <Register {...props} 
           account={this.state.account} 
           contract={this.state.contract}/>}
         />

@@ -15,6 +15,10 @@ class NavBar extends Component {
 				<ul className="navbar-open col-sm-3 col-md-2 mr-1">
 					<li><Link to='/PendingRequests'>Pending Requests</Link></li>
 				</ul>
+				<ul className="navbar-open col-sm-3 col-md-2 mr-1">
+					<li><Link to='/Register'>Register</Link></li>
+				</ul>
+
         <ul className="navbar-nav px-3">
           <li className="nav-item text-nowrap d-none d-sm-nonee d-sm-block">
             <small className="text-white">{this.props.account}</small>

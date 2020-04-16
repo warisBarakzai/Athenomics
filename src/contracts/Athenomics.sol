@@ -13,7 +13,6 @@ contract Athenomics {
 	}
 
 	struct Member {
-		uint index;
 		address memAddress;
 		string institution;
 	}
@@ -30,7 +29,7 @@ contract Athenomics {
 
 	// list of addresses of entities that may request genomes
 	// Only 1 address/each member
-	mapping(address => Member) public members;
+	mapping(uint => Member) public members;
 	uint public membersCount;
 
 
@@ -64,9 +63,9 @@ contract Athenomics {
 		return genomes[genome_owner].open_requests;
 	}
 
-	function getMemberName(address memAddress) public view returns (string memory) {
-		return members[memAddress];
-	}
+	// function getMemberName(address memAddress) public view returns (string memory) {
+	// 	return members[memAddress];
+	// }
 
 	// Add candidates to candidates mapping
 	// function addCandidate(string memory _name) private {
