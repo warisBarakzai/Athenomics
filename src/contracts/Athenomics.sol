@@ -15,7 +15,6 @@ contract Athenomics {
 	}
 
 	struct Member {
-		uint index;
 		address memAddress;
 		string institution;
 		// values 1=open, 0=rejected, 2=accepted
@@ -55,7 +54,7 @@ contract Athenomics {
 	// add member to member mapping
 	function addMember(string memory _ins) public {
 		++membersCount;
-		Member memory _member = Member(membersCount, msg.sender, _ins);
+		Member memory _member = Member(msg.sender, _ins);
 		members[msg.sender] = _member;
 	}
 
