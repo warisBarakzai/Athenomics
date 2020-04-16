@@ -10,12 +10,16 @@ contract Athenomics {
 		string source_type;
 		address[] shared;
 		address[] open_requests;
+		// 0=rejected, 1=open, 2=accepted
+		mapping(address => uint) open_requests_status;
 	}
 
 	struct Member {
 		uint index;
 		address memAddress;
 		string institution;
+		// values 1=open, 0=rejected, 2=accepted
+		mapping(uint => uint) requests;
 	}
 
 	// additions to mappings and address arrays changes state of contract.
@@ -51,21 +55,33 @@ contract Athenomics {
 	// add member to member mapping
 	function addMember(string memory _ins) public {
 		++membersCount;
-		Member memory _member = Member(msg.sender, _ins);
-		members[membersCount] = _member;
+		Member memory _member = Member(membersCount, msg.sender, _ins);
+		members[msg.sender] = _member;
 	}
 
 	function addRequest(uint genome_owner) public {
 		genomes[genome_owner].open_requests.push(msg.sender);
+		genomes[genome_owner].open_requests_status[msg.sender] = 1;
+		// Create a request in the member requests field
+		members[msg.sender].requests[genome_owner] = 1;
 
 	}
 
-	function getRequest(uint genome_owner) public view returns (address[] memory) {
+	function getGenomeRequests(uint genome_owner) public view returns (address[] memory) {
 		return genomes[genome_owner].open_requests;
 	}
 
+	function getGenomeRequestStatus(uint genome_owner, address member) public view returns (uint) {
+		return genomes[genome_owner].open_requests_status[member];
+	}
+
+	function changeRequest(uint genome_index, address member, uint change) public {
+		members[member].requests[genome_index] = change;
+		genomes[genome_index].open_requests_status[member] = change;
+	}
+
 	function getMemberName(address memAddress) public view returns (string memory) {
-		return members[memAddress];
+		return members[memAddress].institution;
 	}
 
 	// Add candidates to candidates mapping
