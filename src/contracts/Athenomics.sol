@@ -76,18 +76,29 @@ contract Athenomics {
 		return genomes[genome_owner].open_requests_status[member];
 	}
 
-	function checkGenomeRequestExists(uint genome_owner) public view returns (bool) {
-		for(uint i = 0; i < genomes[genome_owner].open_requests.length; i++){
-			if(genomes[genome_owner].open_requests[i] == msg.sender) {
-				return true;
-			}
-		}
-		return false;
+	function checkGenomeRequestExists(uint genome_owner, address sender) public view returns (uint) {
+		return genomes[genome_owner].open_requests_status[sender];
 	}
 
 	function changeRequest(uint genome_index, address member, uint change) public {
 		members[member].requests[genome_index] = change;
 		genomes[genome_index].open_requests_status[member] = change;
+		if(change == 1) {
+			uint index = 0;
+			members[member].requests[genome_index] = 0;
+			genomes[genome_index].open_requests_status[member] = 0;
+			for(uint i = 0; i < genomes[genome_index].open_requests.length; ++i){
+				if(genomes[genome_index].open_requests[i] == member){
+					index = i;
+					break;
+				}
+			}
+			for (uint i=index; i<genomes[genome_index].open_requests.length-1; ++i){
+				genomes[genome_index].open_requests[i] = genomes[genome_index].open_requests[i+1];
+			}
+			delete genomes[genome_index].open_requests[genomes[genome_index].open_requests.length-1];
+			genomes[genome_index].open_requests.length--;
+		}
 	}
 
 	function getMemberName(address memAddress) public view returns (string memory) {
@@ -98,8 +109,8 @@ contract Athenomics {
 		return genomes[genome_index].owner;
 	}
 
-	function checkMemberExists() public view returns (bool) {
-		return members[msg.sender].exists;
+	function checkMemberExists(address sender) public view returns (bool) {
+		return members[sender].exists;
 	}
 
 	function returnSeq(uint genome_index) public view returns (string memory) {

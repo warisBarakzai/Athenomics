@@ -78,44 +78,24 @@ class Home extends Component {
       return
     }
     var index = parseInt(event.target.innerText)
-    try {
-      const genomeExists = 
-          await this.props.contract.methods.checkGenomeRequestExists(index).call()
-      console.log(genomeExists, 'genome works')
-    } catch {
-      console.log("genomeExists fails")
+    var genomeExists = 
+        await this.props.contract.methods.checkGenomeRequestExists(index, this.props.account).call()
+    genomeExists = genomeExists.toNumber()
+    const memberExists = 
+        await this.props.contract.methods.checkMemberExists(this.props.account).call()
+    if(this.props.account == this.state.genomes[index-1].owner) {
+      window.alert('Cannot Request Owned Genome!')
+      return
+    } else if (genomeExists == 1 || genomeExists == 2 || genomeExists == 3) {
+      window.alert('Open Request for this sample already exists')
+      return
+    } else if(memberExists == false) {
+      window.alert('Must Register Before Requesting Genomes')
+      return
     }
-    try {
-      const memberExists = 
-          await this.props.contract.methods.checkMemberExists().call()
-      console.log(memberExists, 'member works')
-    } catch {
-      console.log("memberExists fails")
-    }
-    // if(genomeExists){
-    //   window.alert('Open Request for this Genome already exists!')
-    //   return
-    // } else if (this.props.address == this.genomes[index-1].owner) {
-    //   window.alert('Cannot Request Owned Genome!')
-    //   return
-    // } else if(memberExists) {
-    //   window.alert('Must Register Before Requesting Genomes')
-    // }
     this.props.contract.methods.addRequest(index).send({from: this.props.account}).then((r)=>{
       console.log(r)
     })
-  }
-
-  showModal = e => {
-    if(this.state.show[0]){
-      this.setState({
-        show: [!this.state.show[0], 'Show Modal']
-      })
-    } else {
-      this.setState({
-        show: [!this.state.show[0], 'Close Modal']
-      })
-    }
   }
 
   renderTableData() {
