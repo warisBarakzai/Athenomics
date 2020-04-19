@@ -49,12 +49,10 @@ class OpenRequests extends Component {
     var owned_genomes_update = this.state.owned_genomes
     const index = parseInt(event.target.id)
     const mem_address = event.target.value
-    await this.props.contract.methods.changeRequest(index, mem_address, 3).send({from: this.props.account}).then((r)=>{
-      console.log(r)
-    })
+    await this.props.contract.methods.changeRequest(index, mem_address, 3).send({from: this.props.account})
     console.log('accept 1')
     for(var i = 0; i < this.state.owned_genomes[index]['requests'].length; ++i){
-    	if(this.stata.owned_genomes['requests'][i][0] == mem_address){
+    	if(this.state.owned_genomes['requests'][i][0] == mem_address){
     		owned_genomes_update[index]['requests'][i][2]=2
     		console.log('here')
     	}
@@ -74,7 +72,7 @@ class OpenRequests extends Component {
       console.log(r)
     })
     for(var i = 0; i < this.state.owned_genomes[index]['requests'].length; ++i){
-    	if(this.stata.owned_genomes['requests'][i][0] == mem_address){
+    	if(this.state.owned_genomes['requests'][i][0] == mem_address){
     		owned_genomes_update[index]['requests'][i][2]=0
     		console.log('here reject')
     	}

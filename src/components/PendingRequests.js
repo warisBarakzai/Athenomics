@@ -22,11 +22,9 @@ class PendingRequests extends Component {
     var pending_update = {}
     const genomesCount = await this.props.contract.methods.genomesCount().call()
     for(var i=1; i <= genomesCount; ++i){
-      try{
-        const status = await this.props.contract.methods.getGenomeRequestStatus(i, this.props.account).call()
+      const status = await this.props.contract.methods.getGenomeRequestStatus(i, this.props.account).call()
+      if(status.toNumber() != 0){
         pending_update[i] = status.toNumber()
-      } catch {
-        continue
       }
     }
     this.setState({ pending_requests: pending_update })
