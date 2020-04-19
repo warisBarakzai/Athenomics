@@ -7,6 +7,7 @@ class PendingRequests extends Component {
     super(props);
     this.state = {
       pending_requests: {},
+      hash: ''
     }
   }
 
@@ -35,6 +36,9 @@ class PendingRequests extends Component {
     const genome_index = event.target.id
     const status = event.target.value
     const genome_address = await this.props.contract.methods.getGenomeOwner(genome_index).call()
+    // console.log(seq)
+    const seq = await this.props.contract.methods.returnSeq(genome_index).call()
+    this.setState({hash:seq})
     console.log(genome_address)
     var completed = true;
     await window.web3.eth.sendTransaction(
@@ -43,19 +47,12 @@ class PendingRequests extends Component {
         to: genome_address,  
         value: window.web3.utils.toWei("0.033", "ether")
       },
-      function(err, transactionHash) {
-        if(err) {
-          window.alert('Transaction failed, please retry or delete')
-          completed = false
-        }
-      }
+
+          // download from hash and delete transaction
+      window.location.replace('https://ipfs.infura.io/ipfs/' + this.state.hash)
     )
     console.log('completed', completed)
-    if (completed) {
-      // download from hash and delete transaction
-      const seq = await this.props.contract.methods.fetchSeq(genome_index).call()
-      window.location.replace('https://ipfs.infura.io/ipfs/' + seq)
-    }
+
 
   }
 
@@ -64,6 +61,7 @@ class PendingRequests extends Component {
   	for(const entries of Object.entries(this.state.pending_requests)){
       const genome_index = entries[0]
       const status = entries[1]
+      const deleted = entries[2]
       var disabled = true
       var message = 'Pending'
       if(status == 3) { 
@@ -73,13 +71,21 @@ class PendingRequests extends Component {
         message = 'Rejected'
       }
 			map_array.push(
-				<tr key={genome_index}>
+				<tr id={genome_index} key={genome_index}>
           <td id={genome_index}> {entries[0]} </td>
           <td>  <button className="btn btn-dark"
                   id={genome_index} value={status} onClick={this.completeTransaction} 
                   disabled={disabled}>
                   {message}
-                </button> </td>
+                </button> 
+          </td>
+          <td>
+              <button className="btn btn-dark"
+                  id={genome_index} value={status} onClick={this.handleClick} 
+                  disabled={disabled}>
+                  Delete
+              </button> 
+          </td>
         </tr>
 			)
   	}
@@ -96,6 +102,7 @@ class PendingRequests extends Component {
               <tr>
                 <th scope="col">Genome Index</th>
                 <th scope="col">Status</th>
+                <th scope='col'> Delete </th>
               </tr>
             </thead>
             <tbody>
