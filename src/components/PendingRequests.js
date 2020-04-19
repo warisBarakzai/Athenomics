@@ -10,62 +10,103 @@ class PendingRequests extends Component {
     }
   }
 
-	// async componentWillMount() {
- //    await this.updateTable()
- //  }
+	async componentWillMount() {
+    await this.updateTable()
+  }
 
- //  async updateTable() {
- //    if(!this.props.contract){
- //      console.log('No Contract Connected!')
- //      return
- //    }
- //    var owned_genomes_update = {}
- //    const genomesCount = await this.props.contract.methods.genomesCount().call()
- //    for(var i=1; i <= genomesCount; ++i){
- //      const testGenome = await this.props.contract.methods.genomes(i).call()
- //      if(testGenome.owner === this.props.account){
- //        owned_genomes_update[testGenome.index.toNumber()] = 
- //          await this.props.contract.methods.getRequest(testGenome.index).call()
- //      }
- //    }
- //    this.setState({ owned_genomes: owned_genomes_update })
- //    console.log(this.state.owned_genomes)
- //  }
+  async updateTable() {
+    if(!this.props.contract){
+      console.log('No Contract Connected!')
+      return
+    }
+    var pending_update = {}
+    const genomesCount = await this.props.contract.methods.genomesCount().call()
+    for(var i=1; i <= genomesCount; ++i){
+      try{
+        const status = await this.props.contract.methods.getGenomeRequestStatus(i, this.props.account).call()
+        pending_update[i] = status.toNumber()
+      } catch {
+        continue
+      }
+    }
+    this.setState({ pending_requests: pending_update })
+    console.log(this.state.pending_requests)
+  }
 
-  // renderTableData() {
-  // 	var map_array = []
-  // 	for(const entries of Object.entries(this.state.owned_genomes)){
-  // 		for(var i = 0; i < entries[1].length; ++i){
-  // 			map_array.push(
-  // 				<tr key={entries[0].toString() + '.' + i.toString()}>
-	 //          <td id={entries[0]}> {entries[0].toNumber()} </td>
-	 //          <td key={genome.owner} >{genome.owner}</td>
-	 //          <td key={genome.seq} >{genome.seq}</td>
-	 //          <td key={genome.source_type} >{genome.source_type}</td>
-	 //          <td id={genome.index.toNumber()}> <button className="btn btn-dark">{genome.index.toNumber()} </button> </td>
-	 //        </tr>
-  // 			)
-  // 		}
-  // 		return (
-  //       <tr key={entries[0]}>
-  //         <td id={genome.index}> {genome.index.toNumber()} </td>
-  //         <td key={genome.owner} >{genome.owner}</td>
-  //         <td key={genome.seq} >{genome.seq}</td>
-  //         <td key={genome.source_type} >{genome.source_type}</td>
-  //         <td id={genome.index.toNumber()}> <button className="btn btn-dark">{genome.index.toNumber()} </button> </td>
-  //       </tr>
-  //     )
-  // 	}
-  // }
+  completeTransaction = async event =>{
+    const genome_index = event.target.id
+    const status = event.target.value
+    const genome_address = await this.props.contract.methods.getGenomeOwner(genome_index).call()
+    console.log(genome_address)
+    var completed = true;
+    await window.web3.eth.sendTransaction(
+      {
+        from: this.props.account,
+        to: genome_address,  
+        value: window.web3.utils.toWei("0.033", "ether")
+      },
+      function(err, transactionHash) {
+        if(err) {
+          window.alert('Transaction failed, please retry or delete')
+          completed = false
+        }
+      }
+    )
+    console.log('completed', completed)
+    if (completed) {
+      // download from hash and delete transaction
+      const seq = await this.props.contract.methods.fetchSeq(genome_index).call()
+      window.location.replace('https://ipfs.infura.io/ipfs/' + seq)
+    }
+
+  }
+
+  renderTableData() {
+  	var map_array = []
+  	for(const entries of Object.entries(this.state.pending_requests)){
+      const genome_index = entries[0]
+      const status = entries[1]
+      var disabled = true
+      var message = 'Pending'
+      if(status == 3) { 
+        disabled = false
+        message = 'Complete'
+      } else if (status == 1){
+        message = 'Rejected'
+      }
+			map_array.push(
+				<tr key={genome_index}>
+          <td id={genome_index}> {entries[0]} </td>
+          <td>  <button className="btn btn-dark"
+                  id={genome_index} value={status} onClick={this.completeTransaction} 
+                  disabled={disabled}>
+                  {message}
+                </button> </td>
+        </tr>
+			)
+  	}
+    return map_array
+  }
 
 	render() {
 		return (
       <div className="container">
-        <div className="container-fluid mt-5">
-          <h1>This is going to list the requests I have sent</h1>
+        <div className="container-fluid mt-6">
+          <h1 id='title'>Pending Requests</h1>
+          <table id='genome_requests' className="table table-hover table-bordered" onChange={this.updateTable}>
+            <thead>
+              <tr>
+                <th scope="col">Genome Index</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {this.renderTableData()}
+            </tbody>
+          </table>
         </div>
       </div>
-		)
+    )
 	}
 }
 

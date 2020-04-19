@@ -46,11 +46,20 @@ class OpenRequests extends Component {
       console.log('No Contract Connected')
       return
     }
+    var owned_genomes_update = this.state.owned_genomes
     const index = parseInt(event.target.id)
     const mem_address = event.target.value
-    this.props.contract.methods.changeRequest(index, mem_address, 2).send({from: this.props.account}).then((r)=>{
+    await this.props.contract.methods.changeRequest(index, mem_address, 3).send({from: this.props.account}).then((r)=>{
       console.log(r)
     })
+    console.log('accept 1')
+    for(var i = 0; i < this.state.owned_genomes[index]['requests'].length; ++i){
+    	if(this.stata.owned_genomes['requests'][i][0] == mem_address){
+    		owned_genomes_update[index]['requests'][i][2]=2
+    		console.log('here')
+    	}
+    }
+    this.setState({owned_genomes: owned_genomes_update})
   }
 
   rejectOffer = async event =>{
@@ -58,14 +67,23 @@ class OpenRequests extends Component {
       console.log('No Contract Connected')
       return
     }
+    var owned_genomes_update = this.state.owned_genomes
     const index = parseInt(event.target.id)
     const mem_address = event.target.value
-    this.props.contract.methods.changeRequest(index, mem_address, 0).send({from: this.props.account}).then((r)=>{
+    await this.props.contract.methods.changeRequest(index, mem_address, 1).send({from: this.props.account}).then((r)=>{
       console.log(r)
     })
+    for(var i = 0; i < this.state.owned_genomes[index]['requests'].length; ++i){
+    	if(this.stata.owned_genomes['requests'][i][0] == mem_address){
+    		owned_genomes_update[index]['requests'][i][2]=0
+    		console.log('here reject')
+    	}
+    }
+    this.setState({owned_genomes: owned_genomes_update})
   }
 
   renderTableData() {
+  	console.log(this.state.owned_genomes)
   	var map_array = []
   	for(const entries of Object.entries(this.state.owned_genomes)){
   		console.log(entries)
@@ -77,7 +95,7 @@ class OpenRequests extends Component {
   			const status = mem_address_array[i][1]
   			const mem_name = mem_address_array[i][2]
   			var disabled = true
-  			if(status === 1){
+  			if(status === 2){
   				disabled = false
   			}
   			if(disabled) {
@@ -124,8 +142,7 @@ class OpenRequests extends Component {
                 <th scope="col">Status</th>
               </tr>
             </thead>
-
-            <tbody onClick={this.handleClick}>
+            <tbody>
               {this.renderTableData()}
             </tbody>
           </table>

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import logo from '../logo.png';
-import './App.css';
 import ipfs from './ipfs';
 import Modal from './modal';
 
@@ -79,6 +78,29 @@ class Home extends Component {
       return
     }
     var index = parseInt(event.target.innerText)
+    try {
+      const genomeExists = 
+          await this.props.contract.methods.checkGenomeRequestExists(index).call()
+      console.log(genomeExists, 'genome works')
+    } catch {
+      console.log("genomeExists fails")
+    }
+    try {
+      const memberExists = 
+          await this.props.contract.methods.checkMemberExists().call()
+      console.log(memberExists, 'member works')
+    } catch {
+      console.log("memberExists fails")
+    }
+    // if(genomeExists){
+    //   window.alert('Open Request for this Genome already exists!')
+    //   return
+    // } else if (this.props.address == this.genomes[index-1].owner) {
+    //   window.alert('Cannot Request Owned Genome!')
+    //   return
+    // } else if(memberExists) {
+    //   window.alert('Must Register Before Requesting Genomes')
+    // }
     this.props.contract.methods.addRequest(index).send({from: this.props.account}).then((r)=>{
       console.log(r)
     })
@@ -104,7 +126,7 @@ class Home extends Component {
           <td key={genome.owner} >{genome.owner}</td>
           <td key={genome.seq} >{genome.seq}</td>
           <td key={genome.source_type} >{genome.source_type}</td>
-          <td id={genome.index.toNumber()}> <button className="btn btn-dark">{genome.index.toNumber()} </button> </td>
+          <td> <button className="btn btn-dark">{genome.index.toNumber()} </button> </td>
         </tr>
       )
     })
