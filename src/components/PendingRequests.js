@@ -57,9 +57,6 @@ class PendingRequests extends Component {
 
 
   }
-  handleClick = async event =>{
-    event.target.style.visibility = "hidden"
-  }
 
   renderTableData() {
   	var map_array = []
