@@ -7,7 +7,7 @@ class PendingRequests extends Component {
     super(props);
     this.state = {
       pending_requests: {},
-      hash: ''
+      hash: '',
     }
   }
 
@@ -34,6 +34,27 @@ class PendingRequests extends Component {
     console.log(this.state.pending_requests)
   }
 
+  handleClick = async event =>{
+    // event.target.style.visibility = 'hidden'
+    console.log(this.props.account)
+    console.log(event.target.value)
+    const index = event.target.value - 1
+    const mem_address = this.props.account
+    var pending_requests_update = this.state.pending_requests
+    console.log(this.state.pending_requests)
+    await this.props.contract.methods.changeRequest(index, mem_address,1).send({from: this.props.account}).then((r)=>{
+      console.log(r)
+    })
+    for(var i = 0; i < this.state.pending_requests.length; ++i){
+      if(this.state.pending_requests[i] == 3){
+        pending_requests_update['index'] = 1
+        console.log('deleted')
+      }
+    }
+    this.setState({pending_requests: pending_requests_update})
+
+  }
+
   completeTransaction = async event =>{
     const genome_index = event.target.id
     const status = event.target.value
@@ -49,17 +70,26 @@ class PendingRequests extends Component {
         to: genome_address,  
         value: window.web3.utils.toWei("0.033", "ether")
       },
+      function(e, result) { 
+        if(e){
+          window.alert('Transaction failed, please retry or delete')
+          console.log(e)
+        } else {
+          window.location.replace('https://ipfs.infura.io/ipfs/' + seq)
+        }
+      }
+    )
+
 
           // download from hash and delete transaction
-      window.location.replace('https://ipfs.infura.io/ipfs/' + this.state.hash)
-    )
+    
+
     console.log('completed', completed)
-
-
   }
 
   renderTableData() {
-  	var map_array = []
+    var map_array = []
+  	
   	for(const entries of Object.entries(this.state.pending_requests)){
       const genome_index = entries[0]
       const status = entries[1]
@@ -83,7 +113,7 @@ class PendingRequests extends Component {
           </td>
           <td>
               <button className="btn btn-dark"
-                  id={genome_index} value={status} onClick={this.handleClick} 
+                  id={genome_index} value={genome_index} onClick={this.handleClick} 
                   disabled={disabled}>
                   Delete
               </button> 
