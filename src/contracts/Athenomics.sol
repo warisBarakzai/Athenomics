@@ -83,7 +83,7 @@ contract Athenomics {
 	function changeRequest(uint genome_index, address member, uint change) public {
 		members[member].requests[genome_index] = change;
 		genomes[genome_index].open_requests_status[member] = change;
-		if(change == 1) {
+		if(change == 1 ) {
 			uint index = 0;
 			members[member].requests[genome_index] = 0;
 			genomes[genome_index].open_requests_status[member] = 0;
