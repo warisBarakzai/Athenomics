@@ -56,6 +56,11 @@ contract Athenomics {
         string _ins
     );
 
+    event addRequestEvent (
+        uint _genomeRequestStatus,
+        uint _memberRequestStatus
+    );
+
 	constructor() public {}
 
 	// add genome to genome mapping
@@ -78,7 +83,7 @@ contract Athenomics {
 		genomes[genome_owner].open_requests_status[msg.sender] = 2;
 		// Create a request in the member requests field
 		members[msg.sender].requests[genome_owner] = 2;
-
+		emit addRequestEvent(genomes[genome_owner].open_requests_status[msg.sender], members[msg.sender].requests[genome_owner]);
 	}
 
 	function getGenomeRequests(uint genome_owner) public view returns (address[] memory) {

@@ -42,7 +42,7 @@ contract("Athenomics", function(accounts) {
       sampleSource1 = "SOURCE1";
       return athenomicsInstance.addGenome(sampleSEQ1, sampleSource1);
     }).then(function(receipt1){ // Check indexes of the first genome
-      assert.equal(receipt1.logs.length, 1, "an event was triggered")
+      assert.equal(receipt1.logs.length, 1, "an event was triggered");
       assert.equal(receipt1.logs[0].event, "addGenomeEvent", "the event was a addGenomeEvent");
       assert.equal(receipt1.logs[0].args._seq, sampleSEQ1, "the first genome's seq match");
       assert.equal(receipt1.logs[0].args._source, sampleSource1, "the first genome's source match");
@@ -50,16 +50,15 @@ contract("Athenomics", function(accounts) {
       sampleSource2 = "SOURCE2";
       return athenomicsInstance.addGenome(sampleSEQ2, sampleSource2);
     }).then(function(receipt2){ // Check indexes of the second genome
-      assert.equal(receipt2.logs.length, 1, "another event was triggered")
+      assert.equal(receipt2.logs.length, 1, "another event was triggered");
       assert.equal(receipt2.logs[0].event, "addGenomeEvent", "the event was a addGenomeEvent");
       assert.equal(receipt2.logs[0].args._seq, sampleSEQ2, "the second genome's seq match");
       assert.equal(receipt2.logs[0].args._source, sampleSource2, "the second genome's source match");
     })
   });
 
-/*
-  // Test 4 - In Progress
-  // What's the concept of making a request?
+
+  // Test 4 - Done
   // Check if request is pending
   it("Requesting a genome", function(){
     return Athenomics.deployed().then(function(instance) {
@@ -67,11 +66,21 @@ contract("Athenomics", function(accounts) {
       sampleSEQ = "SEQ";
       sampleSource = "SOURCE";
       return athenomicsInstance.addGenome(sampleSEQ, sampleSource);
-    }).then(function(genomes){
-
+    }).then(function(receipt){
+      assert.equal(receipt.logs.length, 1, "an event was triggered")
+      assert.equal(receipt.logs[0].event, "addGenomeEvent", "the event was a addGenomeEvent");
+      assert.equal(receipt.logs[0].args._seq, sampleSEQ, "the genome's seq match");
+      assert.equal(receipt.logs[0].args._source, sampleSource, "the genome's source match");
+      return athenomicsInstance.addRequest(0);
+    }).then(function(receipt){
+      assert.equal(receipt.logs.length, 1, "an event was triggered");
+      assert.equal(receipt.logs[0].event, "addRequestEvent", "the event was a addRequestEvent");
+      assert.equal(receipt.logs[0].args._genomeRequestStatus, 2, "the genome's request status is pending");
+      assert.equal(receipt.logs[0].args._memberRequestStatus, 2, "the member's request status is pending");
     })
   });
 
+/*
   // Test 5 - In Progress
   it("Accepting/rejecting a request ", function(){
     return Athenomics.deployed().then(function(instance) {
