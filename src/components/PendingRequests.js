@@ -33,26 +33,26 @@ class PendingRequests extends Component {
     console.log(this.state.pending_requests)
   }
 
-  handleClick = async event =>{
-    // event.target.style.visibility = 'hidden'
-    console.log(this.props.account)
-    console.log(event.target.value)
-    const index = event.target.value - 1
-    const mem_address = this.props.account
-    var pending_requests_update = this.state.pending_requests
-    console.log(this.state.pending_requests)
-    await this.props.contract.methods.changeRequest(index, mem_address,1).send({from: this.props.account}).then((r)=>{
-      console.log(r)
-    })
-    for(var i = 0; i < this.state.pending_requests.length; ++i){
-      if(this.state.pending_requests[i] == 3){
-        pending_requests_update['index'] = 1
-        console.log('deleted')
-      }
-    }
-    this.setState({pending_requests: pending_requests_update})
+  // handleClick = async event =>{
+  //   // event.target.style.visibility = 'hidden'
+  //   console.log(this.props.account)
+  //   console.log(event.target.value)
+  //   const index = event.target.value - 1
+  //   const mem_address = this.props.account
+  //   var pending_requests_update = this.state.pending_requests
+  //   console.log(this.state.pending_requests)
+  //   await this.props.contract.methods.changeRequest(index, mem_address,1).send({from: this.props.account}).then((r)=>{
+  //     console.log(r)
+  //   })
+  //   for(var i = 0; i < this.state.pending_requests.length; ++i){
+  //     if(this.state.pending_requests[i] == 3){
+  //       pending_requests_update['index'] = 1
+  //       console.log('deleted')
+  //     }
+  //   }
+  //   this.setState({pending_requests: pending_requests_update})
 
-  }
+  // }
 
   completeTransaction = async event =>{
     const genome_index = event.target.id
@@ -77,21 +77,12 @@ class PendingRequests extends Component {
         }
       }
     )
-<<<<<<< HEAD
-
-
-          // download from hash and delete transaction
-    
-
-    console.log('completed', completed)
-=======
   }
 
   handleClick = async event => {
     const index = event.target.id
     const status = event.target.value
     await this.props.contract.methods.changeRequest(index, this.props.account, 1).send({from: this.props.account})
->>>>>>> 55bc9079a0ec789ec8115ec63768a10f2e05ebdd
   }
 
   renderTableData() {
@@ -119,13 +110,8 @@ class PendingRequests extends Component {
                 </button> 
           </td>
           <td>
-              <button className="btn btn-dark"
-<<<<<<< HEAD
-                  id={genome_index} value={genome_index} onClick={this.handleClick} 
-                  disabled={disabled}>
-=======
-                  id={genome_index} value={status} onClick={this.handleClick}>
->>>>>>> 55bc9079a0ec789ec8115ec63768a10f2e05ebdd
+              <button className="btn btn-dark" id={genome_index} 
+              value={status} onClick={this.handleClick}>
                   Delete
               </button> 
           </td>
