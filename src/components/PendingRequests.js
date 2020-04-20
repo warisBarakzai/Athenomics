@@ -79,9 +79,18 @@ class PendingRequests extends Component {
           window.location.replace('https://ipfs.infura.io/ipfs/' + seq)
         }
       }
+
     )    
     // download from hash and delete transaction   
-    console.log('completed', completed)
+
+
+  }
+
+  handleClick = async event => {
+    const index = event.target.id
+    const status = event.target.value
+    await this.props.contract.methods.changeRequest(index, this.props.account, 1).send({from: this.props.account})
+>>>>>>> b59d2d0a77265d547a698d446a0ff85e2465b90b
   }
 
   renderTableData() {
@@ -109,9 +118,10 @@ class PendingRequests extends Component {
                 </button> 
           </td>
           <td>
-              <button className="btn btn-dark"
-                  id={genome_index} value={genome_index} onClick={this.handleClick} 
-                  disabled={disabled}>
+
+
+              <button className="btn btn-dark" id={genome_index} 
+              value={status} onClick={this.handleClick}>
                   Delete
               </button> 
           </td>
