@@ -87,11 +87,11 @@ class PendingRequests extends Component {
 
   }
 
-  handleClick = async event => {
-    const index = event.target.id
-    const status = event.target.value
-    await this.props.contract.methods.changeRequest(index, this.props.account, 1).send({from: this.props.account})
-  }
+  // handleClick = async event => {
+  //   const index = event.target.id
+  //   const status = event.target.value
+  //   await this.props.contract.methods.changeRequest(index, this.props.account, 1).send({from: this.props.account})
+  // }
 
   renderTableData() {
     var map_array = []

@@ -13,14 +13,14 @@ body{
 	height:50vh;
 	width:70vh;
 	position:relative;
-	top:-70px;
+	top:-10vh;
 	z-index: -1;
 
 
 }
 h2{
 	position: relative;
-	top:-70px;
+	top:-10vh;
 	font-family: "Arial Black", Gadget, sans-serifrial;
 
 }
@@ -30,7 +30,7 @@ h2{
 }
 .form1{
 	position: relative;
-	top:-70px;
+	top:-10vh;
 }
 
 #div1{
