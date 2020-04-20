@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ipfs from './ipfs';
 
 
 class PendingRequests extends Component {
@@ -37,23 +38,30 @@ class PendingRequests extends Component {
     const status = event.target.value
     const genome_address = await this.props.contract.methods.getGenomeOwner(genome_index).call()
     // console.log(seq)
+    var completed = true;
     const seq = await this.props.contract.methods.returnSeq(genome_index).call()
     this.setState({hash:seq})
-    console.log(genome_address)
-    var completed = true;
     await window.web3.eth.sendTransaction(
       {
         from: this.props.account,
         to: genome_address,  
         value: window.web3.utils.toWei("0.033", "ether")
       },
-
-          // download from hash and delete transaction
-      window.location.replace('https://ipfs.infura.io/ipfs/' + this.state.hash)
+      function(e, result) { 
+        if(e){
+          window.alert('Transaction failed, please retry or delete')
+          console.log(e)
+        } else {
+          window.location.replace('https://ipfs.infura.io/ipfs/' + seq)
+        }
+      }
     )
-    console.log('completed', completed)
+  }
 
-
+  handleClick = async event => {
+    const index = event.target.id
+    const status = event.target.value
+    await this.props.contract.methods.changeRequest(index, this.props.account, 1).send({from: this.props.account})
   }
 
   renderTableData() {
@@ -81,8 +89,7 @@ class PendingRequests extends Component {
           </td>
           <td>
               <button className="btn btn-dark"
-                  id={genome_index} value={status} onClick={this.handleClick} 
-                  disabled={disabled}>
+                  id={genome_index} value={status} onClick={this.handleClick}>
                   Delete
               </button> 
           </td>
