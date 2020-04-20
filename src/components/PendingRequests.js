@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ipfs from './ipfs';
 
 
 class PendingRequests extends Component {
@@ -23,11 +24,9 @@ class PendingRequests extends Component {
     var pending_update = {}
     const genomesCount = await this.props.contract.methods.genomesCount().call()
     for(var i=1; i <= genomesCount; ++i){
-      try{
-        const status = await this.props.contract.methods.getGenomeRequestStatus(i, this.props.account).call()
+      const status = await this.props.contract.methods.getGenomeRequestStatus(i, this.props.account).call()
+      if(status.toNumber() != 0){
         pending_update[i] = status.toNumber()
-      } catch {
-        continue
       }
     }
     this.setState({ pending_requests: pending_update })
@@ -60,10 +59,9 @@ class PendingRequests extends Component {
     const status = event.target.value
     const genome_address = await this.props.contract.methods.getGenomeOwner(genome_index).call()
     // console.log(seq)
+    var completed = true;
     const seq = await this.props.contract.methods.returnSeq(genome_index).call()
     this.setState({hash:seq})
-    console.log(genome_address)
-    var completed = true;
     await window.web3.eth.sendTransaction(
       {
         from: this.props.account,
@@ -79,12 +77,21 @@ class PendingRequests extends Component {
         }
       }
     )
+<<<<<<< HEAD
 
 
           // download from hash and delete transaction
     
 
     console.log('completed', completed)
+=======
+  }
+
+  handleClick = async event => {
+    const index = event.target.id
+    const status = event.target.value
+    await this.props.contract.methods.changeRequest(index, this.props.account, 1).send({from: this.props.account})
+>>>>>>> 55bc9079a0ec789ec8115ec63768a10f2e05ebdd
   }
 
   renderTableData() {
@@ -113,8 +120,12 @@ class PendingRequests extends Component {
           </td>
           <td>
               <button className="btn btn-dark"
+<<<<<<< HEAD
                   id={genome_index} value={genome_index} onClick={this.handleClick} 
                   disabled={disabled}>
+=======
+                  id={genome_index} value={status} onClick={this.handleClick}>
+>>>>>>> 55bc9079a0ec789ec8115ec63768a10f2e05ebdd
                   Delete
               </button> 
           </td>
