@@ -1,0 +1,14 @@
+
+/*style goes here*/
+
+a{
+	color:black;
+	font-size: 20px;
+}
+
+#navbar1{
+	background-color: rgba(53,150,247,0.6);
+	font-family: "Arial Black", Gadget, sans-serifrial;
+	height:80px;
+}
+

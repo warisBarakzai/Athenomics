@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './PendingRequests.css'
 
 
 class PendingRequests extends Component {
@@ -90,7 +91,6 @@ class PendingRequests extends Component {
     const index = event.target.id
     const status = event.target.value
     await this.props.contract.methods.changeRequest(index, this.props.account, 1).send({from: this.props.account})
->>>>>>> b59d2d0a77265d547a698d446a0ff85e2465b90b
   }
 
   renderTableData() {
@@ -137,7 +137,7 @@ class PendingRequests extends Component {
         <div className="container-fluid mt-6">
           <h1 id='title'>Pending Requests</h1>
           <table id='genome_requests' className="table table-hover table-bordered" onChange={this.updateTable}>
-            <thead>
+            <thead className='thead-dark'>
               <tr>
                 <th scope="col">Genome Index</th>
                 <th scope="col">Status</th>

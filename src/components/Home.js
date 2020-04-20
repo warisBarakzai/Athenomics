@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import logo from '../logo.png';
+import logo from './logo.png';
 import ipfs from './ipfs';
 import Modal from './modal';
+import './Home.css'
 
 class Home extends Component {
 
@@ -115,20 +116,19 @@ class Home extends Component {
   render() {
     return (
       <div className="container">
-        <div className="container-fluid mt-5">
+        <div className="container-fluid mt-3">
           <div className="row">
             <main role="main" className="col-lg-12 d-flex text-center">
-              <div className="content mr-auto ml-auto">
+              <div className="content mr-auto ml-auto" id='div1'>
                 <a
-                  href="http://www.dappuniversity.com/bootcamp"
+                  href="./"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <img src={logo} className="App-logo" alt="logo" />
                 </a>
-                <p>&nbsp;</p> 
                 <h2> Add Genome </h2>
-                <form onSubmit={this.onSubmit} >
+                <form className='form1' onSubmit={this.onSubmit} >
                   <input type='file' onChange={this.captureFile} />
                   <label htmlFor="sourceType">Source</label>
                   <input type="text" id="source" placeholder="Enter source" onChange={this.captureSource}/>
@@ -140,8 +140,8 @@ class Home extends Component {
         </div>
         <div className="container-fluid mt-6">
           <h1 id='title'>Publically Available Genomes</h1>
-          <table id='genomes' className="table table-hover table-bordered" onChange={this.updateTable}>
-            <thead>
+          <table id='genomes' className="table table-hover table-bordered table-striped" onChange={this.updateTable}>
+            <thead className='thead-dark'>
               <tr>
                 <th scope="col">Index</th>
                 <th scope="col">Owner</th>
@@ -157,20 +157,7 @@ class Home extends Component {
             </tbody>
           </table>
         </div>
-        <div className="container-fluid mt-7">
-          <button className="toggle-button" id="centered-toggle-button"
-              onClick={e => {
-                this.showModal(e);
-              }}>
-            {" "}{this.state.show[1]}{" "}</button>
 
-          <Modal onClose={this.showModal} show={this.state.show[0]}>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis
-            deserunt corrupti, ut fugit magni qui quasi nisi amet repellendus non
-            fuga omnis a sed impedit explicabo accusantium nihil doloremque
-            consequuntur.
-          </Modal>
-        </div>
       </div>
     );
   }

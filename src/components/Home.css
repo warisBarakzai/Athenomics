@@ -1,0 +1,38 @@
+/* Styles go here */
+
+body{
+	background-color: #f7fcff;
+	background-blend-mode: multiply;
+
+
+
+}
+
+.App-logo{
+	margin-top: 0px;
+	height:50vh;
+	width:70vh;
+	position:relative;
+	top:-70px;
+	z-index: -1;
+
+
+}
+h2{
+	position: relative;
+	top:-70px;
+	font-family: "Arial Black", Gadget, sans-serifrial;
+
+}
+#title{
+	font-family: "Arial Black", Gadget, sans-serifrial;
+
+}
+.form1{
+	position: relative;
+	top:-70px;
+}
+
+#div1{
+	height:400px;
+}

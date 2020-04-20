@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './OpenRequests.css'
 
 
 class OpenRequests extends Component {
@@ -130,7 +131,7 @@ class OpenRequests extends Component {
 				<div className="container-fluid mt-6">
           <h1 id='title'>Open Requests</h1>
           <table id='genome_requests' className="table table-hover table-bordered" onChange={this.updateTable}>
-            <thead>
+            <thead className='thead-dark'>
               <tr>
                 <th scope="col">Genome Index</th>
                 <th scope="col">Source Type</th>

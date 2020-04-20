@@ -15,8 +15,8 @@ body, html{
 	margin:0;
 	border: 0;
 	padding: 0;
-	/*background-image: url(./background.jpg);*/
-	background-position: center;
+/*	background-image: url(./logo.png);
+*/	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-attachment: fixed;
