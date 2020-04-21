@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import './PendingRequests.css'
+import ipfs from './ipfs';
+import Router from 'router';
+import './PendingRequests.css';
 
 
 class PendingRequests extends Component {
@@ -58,6 +60,7 @@ class PendingRequests extends Component {
   // }
 
   completeTransaction = async event =>{
+    var router = Router()
     const genome_index = event.target.id
     const status = event.target.value
     const genome_address = await this.props.contract.methods.getGenomeOwner(genome_index).call()
@@ -72,12 +75,14 @@ class PendingRequests extends Component {
         to: genome_address,  
         value: window.web3.utils.toWei("0.033", "ether")
       },
-      function(e, result) { 
+      function(e, result){ 
         if(e){
           window.alert('Transaction failed, please retry or delete')
           console.log(e)
-        } else {
-          window.location.replace('https://ipfs.infura.io/ipfs/' + seq)
+        } else {  
+          var win = window.open('https://ipfs.infura.io/ipfs/' + seq, '_blank')
+          win.focus()
+
         }
       }
 
