@@ -7,6 +7,14 @@ body{
 
 
 }
+#githublink{
+	visibility: hidden;
+	font-family: "Arial Black", Gadget, sans-serifrial;
+	font-size: 4vw;
+	position: relative;
+	top: -8vh;
+
+}
 
 .App-logo{
 	margin-top: 0px;
@@ -26,13 +34,19 @@ h2{
 }
 #title{
 	font-family: "Arial Black", Gadget, sans-serifrial;
+	top: 10vh;
+	position: relative;
 
 }
 .form1{
 	position: relative;
-	top:-10vh;
+	top:-5vh;
 }
 
 #div1{
 	height:400px;
+}
+#genomes{
+	top:10vh;
+	position: relative;
 }

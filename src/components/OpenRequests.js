@@ -129,7 +129,7 @@ class OpenRequests extends Component {
 		return (
 			<div className="container">
 				<div className="container-fluid mt-6">
-          <h1 id='title'>Open Requests</h1>
+          <h1 id='title1'>Open Requests</h1>
           <table id='genome_requests' className="table table-hover table-bordered" onChange={this.updateTable}>
             <thead className='thead-dark'>
               <tr>

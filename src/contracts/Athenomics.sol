@@ -134,6 +134,7 @@ contract Athenomics {
 	function returnSeq(uint genome_index) public view returns (string memory) {
 		return genomes[genome_index].seq;
 	} 
+	
 	// Add candidates to candidates mapping
 	// function addCandidate(string memory _name) private {
 	// 	++candidatesCount;

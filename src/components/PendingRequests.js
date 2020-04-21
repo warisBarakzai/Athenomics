@@ -135,7 +135,7 @@ class PendingRequests extends Component {
 		return (
       <div className="container">
         <div className="container-fluid mt-6">
-          <h1 id='title'>Pending Requests</h1>
+          <h1 id='title2'>Pending Requests</h1>
           <table id='genome_requests' className="table table-hover table-bordered" onChange={this.updateTable}>
             <thead className='thead-dark'>
               <tr>

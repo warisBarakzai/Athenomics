@@ -35,7 +35,7 @@ class Register extends Component {
 	render() {
 		return (
      <div className="SearchBar">
-        <h1>SearchBar</h1>
+        <h1>Registration</h1>
  
       <div className="row">
       <div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
