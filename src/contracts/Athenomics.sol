@@ -45,13 +45,11 @@ contract Athenomics {
  //        uint indexed _candidateId
  //    );
 
- 	// addGenome event
     event addGenomeEvent (
         string _seq,
         string _source
     );
 
-     	// addGenome event
     event addMemberEvent (
         string _ins
     );
@@ -59,6 +57,14 @@ contract Athenomics {
     event addRequestEvent (
         uint _genomeRequestStatus,
         uint _memberRequestStatus
+    );
+
+    event changeRequestEvent (
+        uint _requestLength
+    );
+
+    event returnSequenceEvent (
+        string _seq
     );
 
 	constructor() public {}
@@ -70,6 +76,7 @@ contract Athenomics {
 		genomes[genomesCount] = _genome;
 		emit addGenomeEvent(_seq, _source);
 	}
+	
 	// add member to member mapping
 	function addMember(string memory _ins) public {
 		++membersCount;
@@ -112,11 +119,12 @@ contract Athenomics {
 				}
 			}
 			for (uint i=index; i<genomes[genome_index].open_requests.length-1; ++i){
-				genomes[genome_index].open_requests[i] = genomes[genome_index].open_requests[i+1];
+				genomes[genome_index].open_requests[i] = genomes[genome_index].open_requests[i+1]; // shift left by one
 			}
-			delete genomes[genome_index].open_requests[genomes[genome_index].open_requests.length-1];
+			delete genomes[genome_index].open_requests[genomes[genome_index].open_requests.length-1]; // The last One
 			genomes[genome_index].open_requests.length--;
 		}
+		emit changeRequestEvent(genomes[genome_index].open_requests.length);
 	}
 
 	function getMemberName(address memAddress) public view returns (string memory) {
@@ -131,9 +139,13 @@ contract Athenomics {
 		return members[sender].exists;
 	}
 
-	function returnSeq(uint genome_index) public view returns (string memory) {
+	function returnSeq(uint genome_index) public returns (string memory) {
+		emit returnSequenceEvent(genomes[genome_index].seq);
 		return genomes[genome_index].seq;
-	} 
+	}
+		
+
+
 	// Add candidates to candidates mapping
 	// function addCandidate(string memory _name) private {
 	// 	++candidatesCount;
