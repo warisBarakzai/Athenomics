@@ -45,6 +45,22 @@ contract Athenomics {
  //        uint indexed _candidateId
  //    );
 
+ 	// addGenome event
+    event addGenomeEvent (
+        string _seq,
+        string _source
+    );
+
+     	// addGenome event
+    event addMemberEvent (
+        string _ins
+    );
+
+    event addRequestEvent (
+        uint _genomeRequestStatus,
+        uint _memberRequestStatus
+    );
+
 	constructor() public {}
 
 	// add genome to genome mapping
@@ -52,12 +68,14 @@ contract Athenomics {
 		++genomesCount;
 		Genome memory _genome = Genome(genomesCount, msg.sender, _seq, _source, new address[](0), new address[](0), true);
 		genomes[genomesCount] = _genome;
+		emit addGenomeEvent(_seq, _source);
 	}
 	// add member to member mapping
 	function addMember(string memory _ins) public {
 		++membersCount;
 		Member memory _member = Member(msg.sender, _ins, true);
 		members[msg.sender] = _member;
+		emit addMemberEvent(_ins);
 	}
 
 	function addRequest(uint genome_owner) public {
@@ -65,7 +83,7 @@ contract Athenomics {
 		genomes[genome_owner].open_requests_status[msg.sender] = 2;
 		// Create a request in the member requests field
 		members[msg.sender].requests[genome_owner] = 2;
-
+		emit addRequestEvent(genomes[genome_owner].open_requests_status[msg.sender], members[msg.sender].requests[genome_owner]);
 	}
 
 	function getGenomeRequests(uint genome_owner) public view returns (address[] memory) {

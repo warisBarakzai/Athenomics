@@ -11,9 +11,11 @@ contract("Athenomics", function(accounts) {
       sampleSEQ = "SEQ";
       sampleSource = "SOURCE";
       return athenomicsInstance.addGenome(sampleSEQ, sampleSource);
-    }).then(function(genomes){
-      assert.equal(genomes[genomesCount].seq, sampleSEQ, "the genome's seq match");
-      assert.equal(genomes[genomesCount].source_type, sampleSource, "the genome's source match");
+    }).then(function(receipt){
+      assert.equal(receipt.logs.length, 1, "an event was triggered")
+      assert.equal(receipt.logs[0].event, "addGenomeEvent", "the event was a addGenomeEvent");
+      assert.equal(receipt.logs[0].args._seq, sampleSEQ, "the genome's seq match");
+      assert.equal(receipt.logs[0].args._source, sampleSource, "the genome's source match");
     })
   });
 
@@ -23,26 +25,40 @@ contract("Athenomics", function(accounts) {
       athenomicsInstance = instance;
       sampleIns = "Ins";
       return athenomicsInstance.addMember(sampleIns);
-    }).then(function(members){
-      assert.equal(members[membersCount].seq, sampleIns, "the Member's ins match");
+    }).then(function(receipt){
+      assert.equal(receipt.logs.length, 1, "an event was triggered")
+      assert.equal(receipt.logs[0].event, "addMemberEvent", "the event was a addMemberEvent");
+      assert.equal(receipt.logs[0].args._ins, sampleIns, "the Member's ins match");
     })
   });
 
-  //Test 3 - In Progress
+//Test 3 - Done(?) - What should the "view" do?
+// 042020: (Soo) Right now it's just adding two genomes into the instance
   it("Viewing available genomes", function(){
     return Athenomics.deployed().then(function(instance) {
-      electionInstance = instance;
+      athenomicsInstance = instance;
       //Create instances of 2 genomes
-
-    }).then(function(genomes){ // Check indexes of the first genome
-      assert.equal();
-    }).then(function(genomes){ // Check indexes of the second genome
-      assert.equal();
+      sampleSEQ1 = "SEQ1";
+      sampleSource1 = "SOURCE1";
+      return athenomicsInstance.addGenome(sampleSEQ1, sampleSource1);
+    }).then(function(receipt1){ // Check indexes of the first genome
+      assert.equal(receipt1.logs.length, 1, "an event was triggered");
+      assert.equal(receipt1.logs[0].event, "addGenomeEvent", "the event was a addGenomeEvent");
+      assert.equal(receipt1.logs[0].args._seq, sampleSEQ1, "the first genome's seq match");
+      assert.equal(receipt1.logs[0].args._source, sampleSource1, "the first genome's source match");
+      sampleSEQ2 = "SEQ2";
+      sampleSource2 = "SOURCE2";
+      return athenomicsInstance.addGenome(sampleSEQ2, sampleSource2);
+    }).then(function(receipt2){ // Check indexes of the second genome
+      assert.equal(receipt2.logs.length, 1, "another event was triggered");
+      assert.equal(receipt2.logs[0].event, "addGenomeEvent", "the event was a addGenomeEvent");
+      assert.equal(receipt2.logs[0].args._seq, sampleSEQ2, "the second genome's seq match");
+      assert.equal(receipt2.logs[0].args._source, sampleSource2, "the second genome's source match");
     })
   });
 
-  // Test 4 - In Progress
-  // What's the concept of making a request?
+
+  // Test 4 - Done
   // Check if request is pending
   it("Requesting a genome", function(){
     return Athenomics.deployed().then(function(instance) {
@@ -50,11 +66,21 @@ contract("Athenomics", function(accounts) {
       sampleSEQ = "SEQ";
       sampleSource = "SOURCE";
       return athenomicsInstance.addGenome(sampleSEQ, sampleSource);
-    }).then(function(genomes){
-
+    }).then(function(receipt){
+      assert.equal(receipt.logs.length, 1, "an event was triggered")
+      assert.equal(receipt.logs[0].event, "addGenomeEvent", "the event was a addGenomeEvent");
+      assert.equal(receipt.logs[0].args._seq, sampleSEQ, "the genome's seq match");
+      assert.equal(receipt.logs[0].args._source, sampleSource, "the genome's source match");
+      return athenomicsInstance.addRequest(0);
+    }).then(function(receipt){
+      assert.equal(receipt.logs.length, 1, "an event was triggered");
+      assert.equal(receipt.logs[0].event, "addRequestEvent", "the event was a addRequestEvent");
+      assert.equal(receipt.logs[0].args._genomeRequestStatus, 2, "the genome's request status is pending");
+      assert.equal(receipt.logs[0].args._memberRequestStatus, 2, "the member's request status is pending");
     })
   });
 
+/*
   // Test 5 - In Progress
   it("Accepting/rejecting a request ", function(){
     return Athenomics.deployed().then(function(instance) {
@@ -71,11 +97,12 @@ contract("Athenomics", function(accounts) {
 
     });
   });
+*/
 
-/*
+});
 
 
- it("initializes with two candidates", function() {
+/* it("initializes with two candidates", function() {
     return Election.deployed().then(function(instance) {
       return instance.candidatesCount();
     }).then(function(count) {
@@ -142,7 +169,6 @@ contract("Athenomics", function(accounts) {
       assert.equal(voteCount, 1, "candidate 2 did not receive any votes");
     });
   });
-});
 
   it("allows a voter to cast a vote", function() {
     return Election.deployed().then(function(instance) {
