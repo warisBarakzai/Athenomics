@@ -71,6 +71,7 @@ class Home extends Component {
       genomes_update.push(testGenome);
     }
     this.setState({genomes: genomes_update})
+    this.forceUpdate()
   }
 
   handleClick = async event =>{

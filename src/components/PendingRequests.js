@@ -60,15 +60,12 @@ class PendingRequests extends Component {
   // }
 
   completeTransaction = async event =>{
-    var router = Router()
     const genome_index = event.target.id
     const status = event.target.value
     const genome_address = await this.props.contract.methods.getGenomeOwner(genome_index).call()
     // console.log(seq)
     const seq = await this.props.contract.methods.returnSeq(genome_index).call()
     this.setState({hash:seq})
-    console.log(genome_address)
-    var completed = true;
     await window.web3.eth.sendTransaction(
       {
         from: this.props.account,

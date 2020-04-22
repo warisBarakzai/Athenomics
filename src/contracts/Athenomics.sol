@@ -11,7 +11,7 @@ contract Athenomics {
 		address[] shared;
 		address[] open_requests;
 		bool exists;
-		// 1=rejected, 2=open, 3=accepted
+		// 1=rejected, 2=open, 3=accepted 4=bought
 		mapping(address => uint) open_requests_status;
 	}
 
@@ -19,7 +19,7 @@ contract Athenomics {
 		address memAddress;
 		string institution;
 		bool exists;
-		// values 2=open, 1=rejected, 3=accepted
+		// values 2=open, 1=rejected, 3=accepted 4=paid for
 		mapping(uint => uint) requests;
 	}
 

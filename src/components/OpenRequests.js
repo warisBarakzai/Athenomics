@@ -40,6 +40,7 @@ class OpenRequests extends Component {
       }
     }
     this.setState({ owned_genomes: owned_genomes_update })
+    this.forceUpdate()
   }
 
   acceptOffer = async event =>{
@@ -59,6 +60,7 @@ class OpenRequests extends Component {
     	}
     }
     this.setState({owned_genomes: owned_genomes_update})
+    this.forceUpdate()
   }
 
   rejectOffer = async event =>{
@@ -79,6 +81,7 @@ class OpenRequests extends Component {
     	}
     }
     this.setState({owned_genomes: owned_genomes_update})
+    this.forceUpdate()
   }
 
   renderTableData() {
