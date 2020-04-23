@@ -17,24 +17,21 @@ class Register extends Component {
       return
     }
     event.preventDefault()
-    console.log(this.state.institution_name)
     var institution_name = this.state.institution_name
-    console.log(institution_name)
-    this.props.contract.methods.addMember(institution_name).send({from: this.props.account}).then((r)=>{
+    await this.props.contract.methods.addMember(institution_name).send({from: this.props.account}).then((r)=>{
         console.log(r)        
       })
   }
   captureSource(event){
     event.preventDefault()
-    console.log(event.target.value)
     this.setState({institution_name:event.target.value})
-    console.log(this.state.institution_name)
   }
 
 
 	render() {
 		return (
      <div className="SearchBar">
+        <h1>Registration</h1>
       <div className="row">
       <div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
         <div className="card card-signin my-5">

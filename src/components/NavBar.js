@@ -6,18 +6,19 @@ class NavBar extends Component {
 
 	render() {
 		return (
-			<nav className="navbar navbar-dark " id='navbar1'>
+			<nav className="navbar navbar-expand-lg navbar-dark " id='navbar1'>
 				<ul className="navbar-nav col-md-2 col-md-1 mr-0">
-					<li><Link to='/'>Athenomics</Link></li>
+					<li className='nav-item'><Link to='/'>Athenomics</Link></li>
+
 				</ul>
 				<ul className="navbar-nav col-md-2 col-md-1 mr-1">
-					<li><Link to='/OpenRequests'>Open Requests</Link></li>
+					<li className='nav-item'><Link to='/OpenRequests'>Genome Requests</Link></li>
 				</ul>
 				<ul className="navbar-nav col-md-2 col-md-1 mr-1">
-					<li><Link to='/PendingRequests'>Pending Requests</Link></li>
+					<li className='nav-item'><Link to='/PendingRequests'>Requested Status</Link></li>
 				</ul>
 				<ul className="navbar-nav col-md-2 col-md-1 mr-1">
-					<li><Link to='/Register'>Register</Link></li>
+					<li className='nav-item'><Link to='/Register'>Register</Link></li>
 				</ul>
 
         <ul className="navbar-nav px-2">

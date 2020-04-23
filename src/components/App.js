@@ -7,7 +7,7 @@ import OpenRequests from './OpenRequests';
 import PendingRequests from './PendingRequests';
 import Register from './Register';
 
-import {Route, link} from 'react-router-dom';
+import {Route} from 'react-router-dom';
 
 class App extends Component {
 
@@ -24,7 +24,6 @@ class App extends Component {
     await this.loadWeb3()
     await this.loadBlockchainData()
     this.setState({ loading: false }) 
-    console.log(this.state)
   }
 
   // Get the account
@@ -61,7 +60,7 @@ class App extends Component {
   }
 
   render() {
-    if(this.state.loading==true){
+    if(this.state.loading===true){
       return(
         <h2>
           Initializing (If this hangs, there may be an issue with MetaMask)...

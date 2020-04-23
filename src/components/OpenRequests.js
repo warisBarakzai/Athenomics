@@ -52,11 +52,9 @@ class OpenRequests extends Component {
     const index = parseInt(event.target.id)
     const mem_address = event.target.value
     await this.props.contract.methods.changeRequest(index, mem_address, 3).send({from: this.props.account})
-    console.log('accept 1')
     for(var i = 0; i < this.state.owned_genomes[index]['requests'].length; ++i){
-    	if(this.state.owned_genomes['requests'][i][0] == mem_address){
+    	if(this.state.owned_genomes['requests'][i][0] === mem_address){
     		owned_genomes_update[index]['requests'][i][2]=2
-    		console.log('here')
     	}
     }
     this.setState({owned_genomes: owned_genomes_update})
@@ -65,7 +63,6 @@ class OpenRequests extends Component {
 
   rejectOffer = async event =>{
     if(!this.props.contract){
-      console.log('No Contract Connected')
       return
     }
     var owned_genomes_update = this.state.owned_genomes
@@ -75,9 +72,8 @@ class OpenRequests extends Component {
       console.log(r)
     })
     for(var i = 0; i < this.state.owned_genomes[index]['requests'].length; ++i){
-    	if(this.state.owned_genomes['requests'][i][0] == mem_address){
+    	if(this.state.owned_genomes['requests'][i][0] === mem_address){
     		owned_genomes_update[index]['requests'][i][2]=0
-    		console.log('here reject')
     	}
     }
     this.setState({owned_genomes: owned_genomes_update})
@@ -85,10 +81,8 @@ class OpenRequests extends Component {
   }
 
   renderTableData() {
-  	console.log(this.state.owned_genomes)
   	var map_array = []
   	for(const entries of Object.entries(this.state.owned_genomes)){
-  		console.log(entries)
   		const genome_index = parseInt(entries[0])
   		const mem_address_array = entries[1]['requests']
   		const source_type = entries[1]['source_type']
@@ -99,19 +93,19 @@ class OpenRequests extends Component {
   			var disabled = true
   			if(status === 2){
   				disabled = false
-  			}
-  			if(disabled) {
+  			} 
+  			if(disabled === true && status !== 4) {
   				map_array.push(
 	  				<tr key={genome_index.toString() + '.' + i.toString()}>
 		          <td id={genome_index}> {genome_index} </td>
 		          <td key={source_type}> {source_type}</td>
-		          <td key={mem_address}>{mem_address}</td>
+		          <td key={mem_address}>{mem_name} ({mem_address})</td>
 		          <td> <button className="btn btn-dark" id={genome_index} value={mem_address} onClick={this.acceptOffer} disabled>Accept</button> </td>
 		          <td><button className="btn btn-dark" id={genome_index} value={mem_address} onClick={this.rejectOffer} disabled>Reject</button> </td>
 		          <td>Pending Response from Member</td>
 		        </tr>
 	  			)
-  			} else {
+  			} else if (status !== 4) {
   				map_array.push(
 	  				<tr key={genome_index.toString() + '.' + i.toString()}>
 		          <td id={genome_index}> {genome_index} </td>
@@ -132,7 +126,7 @@ class OpenRequests extends Component {
 		return (
 			<div className="container">
 				<div className="container-fluid mt-6">
-          <h1 id='title'>Open Requests</h1>
+          <h1 id='title1'>Open Requests</h1>
           <table id='genome_requests' className="table table-hover table-bordered" onChange={this.updateTable}>
             <thead className='thead-dark'>
               <tr>

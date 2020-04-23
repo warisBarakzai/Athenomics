@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import logo from './logo.png';
 import ipfs from './ipfs';
-import Modal from './modal';
 import './Home.css'
 
 class Home extends Component {
@@ -16,16 +14,27 @@ class Home extends Component {
       buffer: null,
       source: null,
       genomes: [],
-      show: [false, 'Show Modal'],
+      ipfshash:''
     }
   }
 
   captureFile = (event) =>{
     event.preventDefault();
+
     // process file for IPFS
+
     const file = event.target.files[0];
-    const extension = file.name.split('.')[1];
-    if(extension !== 'fasta' && extension !== 'fa'){
+    const extension = file.name.split('.')[2];
+    // var executablePath = "/Users/dr/Desktop/Athenomics/geco-master/src/GeCo.exe";
+    // var parameter1 = ['5']
+    // var parameter2 = ["-l"];
+    // var execFile = require('child_process').execFile, child;
+    // var exec = require('child_process').execFile;
+    //extension !== 'fasta' && extension !== 'fa'&& 
+    if(extension !== 'co' ){
+      window.alert('File type incorrect, please download and compress your file using the provided algorithm!')
+      document.getElementById('githublink').style.visibility = 'visible'
+
       return;
     }
     const reader = new window.FileReader();
@@ -85,19 +94,20 @@ class Home extends Component {
     genomeExists = genomeExists.toNumber()
     const memberExists = 
         await this.props.contract.methods.checkMemberExists(this.props.account).call()
-    if(this.props.account == this.state.genomes[index-1].owner) {
+    if(this.props.account === this.state.genomes[index-1].owner) {
       window.alert('Cannot Request Owned Genome!')
       return
-    } else if (genomeExists == 1 || genomeExists == 2 || genomeExists == 3) {
+    } else if (genomeExists === 1 || genomeExists === 2 || genomeExists === 3 || genomeExists === 4) {
       window.alert('Open Request for this sample already exists')
       return
-    } else if(memberExists == false) {
+    } else if(memberExists === false) {
       window.alert('Must Register Before Requesting Genomes')
       return
     }
-    this.props.contract.methods.addRequest(index).send({from: this.props.account}).then((r)=>{
+    await this.props.contract.methods.addRequest(index).send({from: this.props.account}).then((r)=>{
       console.log(r)
     })
+    this.forceUpdate()
   }
 
   renderTableData() {
@@ -106,7 +116,6 @@ class Home extends Component {
         <tr key={genome.index.toNumber()}>
           <td id={genome.index}> {genome.index.toNumber()} </td>
           <td key={genome.owner} >{genome.owner}</td>
-          <td key={genome.seq} >{genome.seq}</td>
           <td key={genome.source_type} >{genome.source_type}</td>
           <td> <button className="btn btn-dark">{genome.index.toNumber()} </button> </td>
         </tr>
@@ -126,9 +135,11 @@ class Home extends Component {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <img src={logo} className="App-logo" alt="logo" />
+                  <img src={'https://ipfs.io/ipfs/QmRaVYPnxSoXbxV6xom6Hhv3jsKvDCa1MRRKVEt8MbTRrD'} className="App-logo" alt="logo" />
                 </a>
                 <h2> Add Genome </h2>
+                <a id="githublink" href='https://github.com/cobilab/geco'> Compression Algorithm </a>
+
                 <form className='form1' onSubmit={this.onSubmit} >
                   <input type='file' onChange={this.captureFile} />
                   <label htmlFor="sourceType">Source</label>
@@ -139,15 +150,17 @@ class Home extends Component {
             </main>
           </div>
         </div>
+
+
         <div className="container-fluid mt-6">
           <h1 id='title'>Publically Available Genomes</h1>
+
           <table id='genomes' className="table table-hover table-bordered table-striped" onChange={this.updateTable}>
             <thead className='thead-dark'>
               <tr>
                 <th scope="col">Index</th>
                 <th scope="col">Owner</th>
-                <th scope="col">Hash</th>
-                <th scope="col">sourceType</th>
+                <th scope="col">Source Type</th>
                 <th scope="col">button</th>
                 
               </tr>
@@ -160,6 +173,8 @@ class Home extends Component {
         </div>
 
       </div>
+
+
     );
   }
 }
