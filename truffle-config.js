@@ -1,14 +1,14 @@
 var HDWalletProvider = require("truffle-hdwallet-provider");
 
-// const getEnv = env => {
-//   const value = process.env[env];
-//   if (typeof value === 'undefined') {
-//     throw new Error(`${env} has not been set.`);
-//   }
-//   return value;
-// };
-// const mnemonic = getEnv('ETH_WALLET_MNEMONIC');
-// const liveNetwork = getEnv('ETH_LIVE_NETWORK');
+const getEnv = env => {
+  const value = process.env[env];
+  if (typeof value === 'undefined') {
+    throw new Error(`${env} has not been set.`);
+  }
+  return value;
+};
+const mnemonic = getEnv('ETH_WALLET_MNEMONIC');
+const liveNetwork = getEnv('ETH_LIVE_NETWORK');
 
 module.exports = {
   contracts_directory: "./src/contracts",
