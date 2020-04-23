@@ -1,7 +1,17 @@
 
-Nabunomics is deployed in the Test Ropsten Network. Here is the link:
+Nabunomics is deployed in the Test Ropsten Network. Here is the link: (Please refer to the instructions below before proceeding (1 & 2 are unneeded if not uploading a genome))
 
-_____________________________ (Whatever the link is)
+gateway.ipfs.io/ipfs/QmWzd1QnvMNaU4My16TjR2jqndkrVjgsEYgynjnZWNDv58
+
+In order to test on the page: 
+1. Navigate to https://github.com/cobilab/geco
+2. Download and install the compressor/decompressor (Test data available in test_data folder of Nabunomics gitHub )
+1. Install Metamask as a Chrome extension 
+2. Create an account
+3. Connect to the Ropsten Test Network
+4. Navigate to https://faucet.metamask.io/
+5. Obtain 1 ether from the faucet
+6. Navigate to link above and begin testing (requires 2 accounts in order to test purchasing function)
 
 
 
@@ -11,40 +21,55 @@ _____________________________ (Whatever the link is)
 
 	Prerequisites:
 
-		- This application runs on Ethereum, so you must have an Ethereum Account to enable transactions. For local development purposes, you must have a truffle suite such as Ganache in order to run the application. Refer to the following link for Ganache: 
+		- Node and npm. Refer to Google to install these.
 
-			https://github.com/trufflesuite/Ganache
+		- This application is for Ethereum but runs on the Ropsten Test Network (if not accessing locally, but through the web), so you must have MetaMask installed in order to interact with the page. For local development purposes, you must have the Truffle Suite in order to run the application. Refer to the following link: 
 
-		You must have your Ganache account open to migrate your contract.
+			https://www.npmjs.com/package/truffle
 
-		- On Online Ethereum Wallet is necessary to make transactions via web. Chrome Extensions such as MetaMask is required. Refer to the following link for MetaMask:
+			npm install -g truffle
+
+			and ganache-cli:
+
+			https://www.npmjs.com/package/ganache-cli
+
+			npm install -g ganache-cli
+
+		- An Online Ethereum Wallet is necessary to make transactions via web. Chrome Extensions such as MetaMask is required. Refer to the following link for MetaMask:
 
 			https://metamask.io/
 
 	
-	1. Download all packages for npm:
+	1. Download all packages for npm from the root folder:
 
 		npm install
 
+	3. Run ganache-cli from port 7545:
 
-	2. Check the contract before deploying using a test file:
+		$:ganache-cli -p 7545
+
+	4. Connect Metamask to the ganache local blockchain. Configure a custom RPC (click metamask icon, then network, then custom RPC) and connect to localhost:7545. Then import an account into Metamask and select one of the private keys listed when starting ganache-cli. It should have 100 ether to start off with
+
+
+	5. Check the contract before deploying using a test file:
 
 		truffle test
 
 
-	3. Migrate your contract. This will consume gas:
+	6. Migrate your contract. This will consume gas:
 
-		truffle migrate --reset
+		truffle migrate 
+
+		- If you have previously tried to migrate, then:
+
+			truffle migrate --reset
 
 
-	4. After migrating your contract, run the application:
+	7. After migrating your contract, run the application:
 
 		npm run start
 
 
-	5. Access your application using:
+	8. Access your application using:
 
 		localhost:3000
-
-
-	6. Log into the application using your MetaMask confidential information(Directed to localhost:7545).
