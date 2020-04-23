@@ -1,0 +1,43 @@
+User Instructions:
+
+	To register your institution as a Member:
+
+		1. Navigate to the "Register" tab on the top
+		2. Write your Institution Name
+		3. Click "REGISTER" (This will invoke consuming gas)
+		4. If you confirm, the registration is complete
+
+	To Submit a Genome into the Application:
+
+		1. Navigate to the Home page using the "Athenomics" tab on the top (If you're not in the home tab)
+		2. Click "Choose File"
+		3. Navigate to your FASTA(.fa) file including your Genome
+		4. Click "Open"
+		5. Enter your soure in the "Source" Section on the right
+		6. Click Submit (This will invoke consuming gas)
+		7. If you confirm, the submission is complete
+		8. Refresh the page to confirm your genome
+
+	To Create a Request for a Genome:
+
+		1. Navigate to the Home page using the "Athenomics" tab on the top (If you're not in the home tab)
+		2. All publicly available genomes will be present in the "Publically Available Genomes" table
+		3. Click the button on the right of the genome that you need to create a request. (This will invoke consuming gas)
+		(IMPORTANT NOTE: You cannot make a request to a Genome that you own.)
+		4. If you confirm, the request will be made
+		5. Navigate to the "Pending Requests" tab to confirm that your request has been made
+
+	To View Requests that others have made with your Genome:
+		1. Navigate to the "Open Requests" tab on the top
+		2. Review the request information 
+		3. If you wish to update the request status(Reject/Accept), click "Accept" to accept OR "Reject" to reject. (This will invoke consuming gas)
+		4. If you confirm, the request status will be updated.
+		5. Refresh the page to confirm that the request has been successfully updated
+
+
+	To View Requests that you have made to others' Genomes:
+		1. Navigate to the "Pending Requests" tab on the top
+		2. If the request is still pending, it will display "Pending"
+		4. If the request has been accepted, the Button in the "Status" tab will be activated as "Complete"
+		5. Click on the "Complete" Button (This will invoke consuming gas)
+		6. This will redirect you to the page with the genome file
