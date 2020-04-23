@@ -8,7 +8,7 @@ class NavBar extends Component {
 		return (
 			<nav className="navbar navbar-expand-lg navbar-dark " id='navbar1'>
 				<ul className="navbar-nav col-md-2 col-md-1 mr-0">
-					<li className='nav-item'><Link to='/'>Athenomics</Link></li>
+					<li className='nav-item'><Link to='/'>Nabunomics</Link></li>
 
 				</ul>
 				<ul className="navbar-nav col-md-2 col-md-1 mr-1">
