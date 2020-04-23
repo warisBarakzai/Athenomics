@@ -1,0 +1,13 @@
+/*style goes here*/
+
+h1{
+	text-align:center;
+	top: -3vh;
+	position: relative;
+}
+
+#genome_requests{
+	position: relative;
+	margin-top: -10vh;
+
+}

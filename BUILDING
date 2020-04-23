@@ -1,0 +1,50 @@
+
+Nabunomics is deployed in the Test Ropsten Network. Here is the link:
+
+_____________________________ (Whatever the link is)
+
+
+
+<<Development Purposes>>
+
+<How to build the application locally>
+
+	Prerequisites:
+
+		- This application runs on Ethereum, so you must have an Ethereum Account to enable transactions. For local development purposes, you must have a truffle suite such as Ganache in order to run the application. Refer to the following link for Ganache: 
+
+			https://github.com/trufflesuite/Ganache
+
+		You must have your Ganache account open to migrate your contract.
+
+		- On Online Ethereum Wallet is necessary to make transactions via web. Chrome Extensions such as MetaMask is required. Refer to the following link for MetaMask:
+
+			https://metamask.io/
+
+	
+	1. Download all packages for npm:
+
+		npm install
+
+
+	2. Check the contract before deploying using a test file:
+
+		truffle test
+
+
+	3. Migrate your contract. This will consume gas:
+
+		truffle migrate --reset
+
+
+	4. After migrating your contract, run the application:
+
+		npm run start
+
+
+	5. Access your application using:
+
+		localhost:3000
+
+
+	6. Log into the application using your MetaMask confidential information(Directed to localhost:7545).

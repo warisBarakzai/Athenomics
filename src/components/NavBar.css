@@ -1,0 +1,15 @@
+
+/*style goes here*/
+
+a{
+	color:black;
+	font-size: 1.5vw;
+}
+
+#navbar1{
+	background-color: rgba(53,150,247,0.6);
+	font-family: "Arial Black", Gadget, sans-serifrial;
+	height:10vh;
+	flex-wrap: nowrap;
+}
+
