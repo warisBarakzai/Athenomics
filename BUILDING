@@ -1,21 +1,5 @@
-<Here Starts Description>
 
-	You are obligated to include a BUILDING file describing the exact steps necessary to build and deploy.
-	Explicitly state any assumptions about operating system, compiler, network access, environment, etc.
-
-	In order to receive credit, your instructions must be reproducible, i.e. your instructor should be able
-	to follow your instructions and deploy and use your application.
-
-	If your application supports deployment to a cloud service, you must provide two sets of instruction:
-	instructions for cloud deployment, and also instructions for local deployment.
-
-	If your application is publicly deployed, provide a link.
-
-<Here Ends Description>
-
-
-
-Nabunomics is deployed in the Main Ethereum Network and is now available via web. Here is the link:
+Nabunomics is deployed in the Test Ropsten Network. Here is the link:
 
 _____________________________ (Whatever the link is)
 
